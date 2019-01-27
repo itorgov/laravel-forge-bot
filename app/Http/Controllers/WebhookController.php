@@ -20,7 +20,7 @@ class WebhookController extends Controller
     {
         // Execute a first command.
         if ($request->commands->isNotEmpty()) {
-            $jobClassName = '\\App\\Jobs\\Telegram\\' . studly_case(str_after($request->commands->first(), '/')) . 'Job';
+            $jobClassName = '\\App\\Jobs\\Telegram\\' . studly_case(str_before(str_after($request->commands->first(), '/'), '@')) . 'Job';
 
             if (class_exists($jobClassName)) {
                 dispatch(new $jobClassName(request('message')));
