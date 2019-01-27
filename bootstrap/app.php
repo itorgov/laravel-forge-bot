@@ -44,11 +44,18 @@ $app->singleton(
     App\Console\Kernel::class
 );
 
-$app->bind(GuzzleHttp\Client::class, function ($app) {
-    return new GuzzleHttp\Client([
-        'base_uri' => 'https://api.telegram.org/bot' . env('TELEGRAM_BOT_TOKEN') . '/'
-    ]);
-});
+/*
+|--------------------------------------------------------------------------
+| Register Service Providers
+|--------------------------------------------------------------------------
+|
+| Here we will register all of the application's service providers which
+| are used to bind services into the container. Service providers are
+| totally optional, so you are not required to uncomment this line.
+|
+*/
+
+$app->register(App\Providers\AppServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

@@ -50,6 +50,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        // The app should response HTTP 200 every time for correct working with Telegram Bot API.
+        return response('Wow! Exception!');
     }
 }
