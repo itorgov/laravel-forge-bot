@@ -54,10 +54,11 @@ class WebhookJob extends Job
 
             $url = url("/webhook/forge/{$token}", [], true);
 
-            $client->post('sendMessage', [
+            $client->post('sendPhoto', [
                 'json' => [
                     'chat_id' => $chatId,
-                    'text' => "It is your webhook URL for this chat: $url."
+                    'photo' => url('/images/forge_webhook_place.png', [], true),
+                    'caption' => "Paste this URL $url to that input field in your app settings and press \"Add Webhook\"."
                 ]
             ]);
         }
