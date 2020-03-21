@@ -1,19 +1,36 @@
 {
-    "name": "laravel/laravel",
+    "name": "itorgov/laravel-forge-bot",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Laravel Forge chat bot for Telegram messenger",
     "keywords": [
-        "framework",
-        "laravel"
+        "laravel",
+        "forge",
+        "telegram",
+        "bot"
     ],
-    "license": "MIT",
+    "license": "ISC",
+    "authors": [
+        {
+            "name": "Ivan Torgov",
+            "email": "likecod@gmail.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/itorgov/forge-sdk"
+        }
+    ],
     "require": {
-        "php": "^7.2.5",
+        "php": "^7.4",
+        "clue/socks-react": "^1.0",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^7.0",
-        "laravel/tinker": "^2.0"
+        "laravel/tinker": "^2.0",
+        "themsaid/forge-sdk": "dev-webhook-management",
+        "unreal4u/telegram-api": "^3.5"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
