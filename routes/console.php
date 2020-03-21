@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
+use App\Facades\TelegramBot;
 use Illuminate\Support\Facades\Artisan;
 
 /*
@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->describe('Display an inspiring quote');
+Artisan::command('telegram:set-webhook', function () {
+    TelegramBot::setWebhook(route('integrations.telegram.webhook'));
+})->describe('Set a url for receiving incoming updates from Telegram servers.');
+
+Artisan::command('telegram:delete-webhook', function () {
+    TelegramBot::deleteWebhook();
+})->describe('Remove webhook integration.');
