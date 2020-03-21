@@ -28,11 +28,10 @@
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
+        "irazasyed/telegram-bot-sdk": "^3.0",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
-        "longman/telegram-bot": "^0.61.1",
-        "themsaid/forge-sdk": "dev-webhook-management",
-        "unreal4u/telegram-api": "^3.5"
+        "themsaid/forge-sdk": "dev-webhook-management"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

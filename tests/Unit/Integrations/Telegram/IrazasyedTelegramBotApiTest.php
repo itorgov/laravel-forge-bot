@@ -3,12 +3,12 @@
 namespace Tests\Unit\Integrations\Telegram;
 
 use App\Integrations\Telegram\Exceptions\TelegramBotException;
-use App\Integrations\Telegram\LongmanTelegramBotApi;
+use App\Integrations\Telegram\IrazasyedTelegramBotApi;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
-class LongmanTelegramBotApiTest extends TestCase
+class IrazasyedTelegramBotApiTest extends TestCase
 {
     private function rawRequest(string $methodName, $data = []): Response
     {
@@ -24,8 +24,7 @@ class LongmanTelegramBotApiTest extends TestCase
      */
     public function can_succsessfuly_set_a_webhook_url()
     {
-        sleep(1); // To avoid 429 error;
-        $telegram = new LongmanTelegramBotApi(env('TELEGRAM_BOT_API_KEY'), env('TELEGRAM_BOT_API_USERNAME'));
+        $telegram = new IrazasyedTelegramBotApi(env('TELEGRAM_BOT_API_KEY'));
         $this->rawRequest('deleteWebhook');
 
         tap($this->rawRequest('getWebhookInfo')->json(), function ($body) {
@@ -33,6 +32,7 @@ class LongmanTelegramBotApiTest extends TestCase
             $this->assertEquals('', $body['result']['url']);
         });
 
+        sleep(1); // To avoid 429 error;
         $telegram->setWebhook(route('integrations.telegram.webhook'));
 
         tap($this->rawRequest('getWebhookInfo')->json(), function ($body) {
@@ -46,10 +46,10 @@ class LongmanTelegramBotApiTest extends TestCase
      */
     public function cannot_set_an_invalid_webhook_url()
     {
-        sleep(1); // To avoid 429 error;
         $this->expectException(TelegramBotException::class);
-        $telegram = new LongmanTelegramBotApi(env('TELEGRAM_BOT_API_KEY'), env('TELEGRAM_BOT_API_USERNAME'));
+        $telegram = new IrazasyedTelegramBotApi(env('TELEGRAM_BOT_API_KEY'));
 
+        sleep(1); // To avoid 429 error;
         $telegram->setWebhook('invalid-url');
     }
 
@@ -58,8 +58,8 @@ class LongmanTelegramBotApiTest extends TestCase
      */
     public function can_succsessfuly_delete_a_webhook()
     {
+        $telegram = new IrazasyedTelegramBotApi(env('TELEGRAM_BOT_API_KEY'));
         sleep(1); // To avoid 429 error;
-        $telegram = new LongmanTelegramBotApi(env('TELEGRAM_BOT_API_KEY'), env('TELEGRAM_BOT_API_USERNAME'));
         $telegram->setWebhook(route('integrations.telegram.webhook'));
 
         tap($this->rawRequest('getWebhookInfo')->json(), function ($body) {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4453bd5f7c85906d7428269bf0a686d",
+    "content-hash": "37cf995047e94598de7baebfb8ee47bc",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -742,6 +742,77 @@
             "time": "2019-07-01T23:21:34+00:00"
         },
         {
+            "name": "irazasyed/telegram-bot-sdk",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/irazasyed/telegram-bot-sdk.git",
+                "reference": "5b6acf5538a4639d87c79fe91ae1e790b246851b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/irazasyed/telegram-bot-sdk/zipball/5b6acf5538a4639d87c79fe91ae1e790b246851b",
+                "reference": "5b6acf5538a4639d87c79fe91ae1e790b246851b",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~6.0",
+                "illuminate/support": "^5.0 || ^6.0 || ^7.0",
+                "league/event": "^2.1",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpspec/prophecy": "^1.5",
+                "phpunit/phpunit": "^4.8 || ^5.0"
+            },
+            "suggest": {
+                "illuminate/container": "Hold dependencies to be injected in commands constructors",
+                "irazasyed/larasupport": "Allows you to use any Laravel Package in Lumen by adding support!"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Telegram\\Bot\\Laravel\\TelegramServiceProvider"
+                    ],
+                    "aliases": {
+                        "Telegram": "Telegram\\Bot\\Laravel\\Facades\\Telegram"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Telegram\\Bot\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Syed Irfaq R.",
+                    "email": "syed+gh@lukonet.com",
+                    "homepage": "https://github.com/irazasyed"
+                }
+            ],
+            "description": "The Unofficial Telegram Bot API PHP SDK",
+            "homepage": "https://github.com/irazasyed/telegram-bot-sdk",
+            "keywords": [
+                "laravel",
+                "laravel telegram",
+                "telegram",
+                "telegram bot",
+                "telegram bot api",
+                "telegram php",
+                "telegram sdk"
+            ],
+            "time": "2020-03-05T18:26:03+00:00"
+        },
+        {
             "name": "jakub-onderka/php-console-color",
             "version": "v0.2",
             "source": {
@@ -1119,6 +1190,56 @@
             "time": "2020-02-28T18:53:50+00:00"
         },
         {
+            "name": "league/event",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/event.git",
+                "reference": "d2cc124cf9a3fab2bb4ff963307f60361ce4d119"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/event/zipball/d2cc124cf9a3fab2bb4ff963307f60361ce4d119",
+                "reference": "d2cc124cf9a3fab2bb4ff963307f60361ce4d119",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "henrikbjorn/phpspec-code-coverage": "~1.0.1",
+                "phpspec/phpspec": "^2.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Event\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frenky.net"
+                }
+            ],
+            "description": "Event package",
+            "keywords": [
+                "emitter",
+                "event",
+                "listener"
+            ],
+            "time": "2018-11-26T11:52:41+00:00"
+        },
+        {
             "name": "league/flysystem",
             "version": "1.0.66",
             "source": {
@@ -1201,67 +1322,6 @@
                 "storage"
             ],
             "time": "2020-03-17T18:58:12+00:00"
-        },
-        {
-            "name": "longman/telegram-bot",
-            "version": "0.61.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-telegram-bot/core.git",
-                "reference": "85d52f67b5ecf3ac81471fbcfacc37f61abb0c8e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-telegram-bot/core/zipball/85d52f67b5ecf3ac81471fbcfacc37f61abb0c8e",
-                "reference": "85d52f67b5ecf3ac81471fbcfacc37f61abb0c8e",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "ext-json": "*",
-                "ext-mbstring": "*",
-                "ext-pdo": "*",
-                "guzzlehttp/guzzle": "^6.3",
-                "php": "^5.5|^7.0",
-                "psr/log": "^1.1"
-            },
-            "require-dev": {
-                "dms/phpunit-arraysubset-asserts": "^0.1.0",
-                "monolog/monolog": "^2.0",
-                "phpunit/phpunit": "^8.4",
-                "squizlabs/php_codesniffer": "^3.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Longman\\TelegramBot\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Avtandil Kikabidze aka LONGMAN",
-                    "email": "akalongman@gmail.com",
-                    "homepage": "http://longman.me",
-                    "role": "Developer"
-                },
-                {
-                    "name": "PHP Telegram Bot Team",
-                    "homepage": "https://github.com/php-telegram-bot/core/graphs/contributors",
-                    "role": "Developer"
-                }
-            ],
-            "description": "PHP Telegram bot",
-            "homepage": "https://github.com/php-telegram-bot/core",
-            "keywords": [
-                "api",
-                "bot",
-                "telegram"
-            ],
-            "time": "2019-11-23T21:48:39+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -3862,56 +3922,6 @@
             "time": "2019-10-24T08:53:34+00:00"
         },
         {
-            "name": "unreal4u/telegram-api",
-            "version": "v3.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/unreal4u/telegram-api.git",
-                "reference": "7309d77130eeee2a8df3b301c13fd8e82b100555"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/unreal4u/telegram-api/zipball/7309d77130eeee2a8df3b301c13fd8e82b100555",
-                "reference": "7309d77130eeee2a8df3b301c13fd8e82b100555",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "~6.0",
-                "php": ">=7.0.0",
-                "psr/log": "~1.0"
-            },
-            "require-dev": {
-                "monolog/monolog": "~1.17",
-                "phpunit/php-code-coverage": "~3.3",
-                "phpunit/phpunit": ">=5.2",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "unreal4u\\TelegramAPI\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Camilo Sperberg",
-                    "email": "me@unreal4u.com",
-                    "homepage": "https://github.com/unreal4u/telegram-api/graphs/contributors"
-                }
-            ],
-            "description": "A complete Telegram bot API implementation written in PHP, with support for inline bots!",
-            "keywords": [
-                "api",
-                "telegram",
-                "telegram bot"
-            ],
-            "time": "2017-01-01T22:41:00+00:00"
-        },
-        {
             "name": "vlucas/phpdotenv",
             "version": "v4.1.2",
             "source": {
@@ -6023,7 +6033,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.4"
+        "php": "^7.4",
+        "ext-pdo": "*"
     },
     "platform-dev": []
 }

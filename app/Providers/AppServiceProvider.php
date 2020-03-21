@@ -2,11 +2,9 @@
 
 namespace App\Providers;
 
-use App\Integrations\Telegram\LongmanTelegramBotApi;
+use App\Integrations\Telegram\IrazasyedTelegramBotApi;
 use App\Integrations\Telegram\TelegramBotApi;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
-use Longman\TelegramBot\TelegramLog;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,14 +15,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(LongmanTelegramBotApi::class, function () {
-            return new LongmanTelegramBotApi(
-                config('services.telegram.bot.api_key'),
-                config('services.telegram.bot.username')
+        $this->app->bind(IrazasyedTelegramBotApi::class, function () {
+            return new IrazasyedTelegramBotApi(
+                config('services.telegram.bot.api_key')
             );
         });
 
-        $this->app->bind(TelegramBotApi::class, LongmanTelegramBotApi::class);
+        $this->app->bind(TelegramBotApi::class, IrazasyedTelegramBotApi::class);
     }
 
     /**
@@ -34,6 +31,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        TelegramLog::initialize(Log::getLogger(), Log::getLogger());
+        //
     }
 }

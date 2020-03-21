@@ -34,6 +34,7 @@ return [
         'bot' => [
             'api_key' => env('TELEGRAM_BOT_API_KEY'),
             'username' => env('TELEGRAM_BOT_USERNAME'),
+            'webhook_token' => env('TELEGRAM_BOT_WEBHOOK_TOKEN'),
         ],
     ],
 

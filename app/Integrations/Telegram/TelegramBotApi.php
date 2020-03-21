@@ -2,13 +2,16 @@
 
 namespace App\Integrations\Telegram;
 
-use Illuminate\Http\Request;
+use App\Integrations\Telegram\Entities\WebhookInfoResponse;
+use App\Integrations\Telegram\Entities\WebhookResponse;
 
 interface TelegramBotApi
 {
-    public function setWebhook(string $hookUrl): void;
+    public function setWebhook(string $hookUrl): WebhookResponse;
 
-    public function deleteWebhook(): void;
+    public function getWebhookInfo(): WebhookInfoResponse;
 
-    public function handle(Request $request): void;
+    public function removeWebhook(): WebhookResponse;
+
+    public function handle(): void;
 }
