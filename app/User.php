@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -11,29 +11,55 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that aren't mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+    protected $guarded = [];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * Finds and returns user by Telegram chat id.
+     * Creates a new user if didn't find any.
      *
-     * @var array
+     * @param string $chatId
+     * @param array $paramsForCreate
+     *
+     * @return static
      */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    public static function firstOrCreateForTelegramChatId(string $chatId, array $paramsForCreate = []): self
+    {
+        return self::query()->firstOrCreate([
+            'telegram_chat_id' => $chatId,
+        ], $paramsForCreate);
+    }
 
     /**
-     * The attributes that should be cast to native types.
+     * Finishes all current user's dialogs.
      *
-     * @var array
+     * @return void
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function finishCurrentDialogs(): void
+    {
+        $this->dialogs()->current()->get()->each->finish();
+    }
+
+    /**
+     * User's tokens.
+     *
+     * @return HasMany
+     */
+    public function tokens(): HasMany
+    {
+        return $this->hasMany(Token::class);
+    }
+
+    /**
+     * User's dialogs.
+     *
+     * @return HasMany
+     */
+    public function dialogs(): HasMany
+    {
+        return $this->hasMany(Dialog::class);
+    }
 }

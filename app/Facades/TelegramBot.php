@@ -2,7 +2,7 @@
 
 namespace App\Facades;
 
-use App\Integrations\Telegram\TelegramBotApi;
+use App\Contracts\TelegramBotContract;
 use Illuminate\Support\Facades\Facade;
 
 class TelegramBot extends Facade
@@ -14,6 +14,6 @@ class TelegramBot extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return TelegramBotApi::class;
+        return TelegramBotContract::class;
     }
 }

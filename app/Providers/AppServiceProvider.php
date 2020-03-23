@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
-use App\Integrations\Telegram\IrazasyedTelegramBotApi;
-use App\Integrations\Telegram\TelegramBotApi;
+use App\Contracts\LaravelForgeContract;
+use App\Contracts\TelegramBotContract;
+use App\Integrations\Laravel\Forge\ThemsaidLaravelForge;
+use App\Integrations\Telegram\IrazasyedTelegramBot;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,13 +17,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(IrazasyedTelegramBotApi::class, function () {
-            return new IrazasyedTelegramBotApi(
-                config('services.telegram.bot.api_key')
-            );
+        $this->app->bind(IrazasyedTelegramBot::class, function () {
+            return new IrazasyedTelegramBot(config('services.telegram.bot.api_key'));
         });
 
-        $this->app->bind(TelegramBotApi::class, IrazasyedTelegramBotApi::class);
+        $this->app->bind(TelegramBotContract::class, IrazasyedTelegramBot::class);
+        $this->app->bind(LaravelForgeContract::class, ThemsaidLaravelForge::class);
+
     }
 
     /**

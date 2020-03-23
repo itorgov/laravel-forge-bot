@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "37cf995047e94598de7baebfb8ee47bc",
+    "content-hash": "94fb91ef6cdda56363f5509b2ab446e7",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1634,20 +1634,20 @@
         },
         {
             "name": "phpoption/phpoption",
-            "version": "1.7.2",
+            "version": "1.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/php-option.git",
-                "reference": "77f7c4d2e65413aff5b5a8cc8b3caf7a28d81959"
+                "reference": "4acfd6a4b33a509d8c88f50e5222f734b6aeebae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/77f7c4d2e65413aff5b5a8cc8b3caf7a28d81959",
-                "reference": "77f7c4d2e65413aff5b5a8cc8b3caf7a28d81959",
+                "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/4acfd6a4b33a509d8c88f50e5222f734b6aeebae",
+                "reference": "4acfd6a4b33a509d8c88f50e5222f734b6aeebae",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.5.9 || ^7.0"
+                "php": "^5.5.9 || ^7.0 || ^8.0"
             },
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.3",
@@ -1685,7 +1685,7 @@
                 "php",
                 "type"
             ],
-            "time": "2019-12-15T19:35:24+00:00"
+            "time": "2020-03-21T18:07:53+00:00"
         },
         {
             "name": "psr/container",
@@ -3827,16 +3827,16 @@
         },
         {
             "name": "themsaid/forge-sdk",
-            "version": "dev-webhook-management",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/itorgov/forge-sdk.git",
-                "reference": "5b7050e1614dd9caa6875c3a06da6ffea5e868c2"
+                "reference": "0f8364ca8cacd95431d88a6a002449fad866e40e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/itorgov/forge-sdk/zipball/5b7050e1614dd9caa6875c3a06da6ffea5e868c2",
-                "reference": "5b7050e1614dd9caa6875c3a06da6ffea5e868c2",
+                "url": "https://api.github.com/repos/itorgov/forge-sdk/zipball/0f8364ca8cacd95431d88a6a002449fad866e40e",
+                "reference": "0f8364ca8cacd95431d88a6a002449fad866e40e",
                 "shasum": ""
             },
             "require": {
@@ -3868,9 +3868,9 @@
                 "laravel"
             ],
             "support": {
-                "source": "https://github.com/itorgov/forge-sdk/tree/webhook-management"
+                "source": "https://github.com/itorgov/forge-sdk/tree/develop"
             },
-            "time": "2020-03-21T10:16:29+00:00"
+            "time": "2020-03-23T13:29:13+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

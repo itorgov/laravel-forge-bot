@@ -31,7 +31,7 @@
         "irazasyed/telegram-bot-sdk": "^3.0",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
-        "themsaid/forge-sdk": "dev-webhook-management"
+        "themsaid/forge-sdk": "dev-develop"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

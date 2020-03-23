@@ -15,6 +15,13 @@ class WebhookInfoResponse extends Fluent
 {
     // It behaves as Fluent class.
 
+    /**
+     * WebhookInfoResponse constructor.
+     *
+     * @param array $attributes
+     *
+     * @return void
+     */
     public function __construct($attributes = [])
     {
         $attributes['result'] = new WebhookInfo($attributes['result'] ?? []);
