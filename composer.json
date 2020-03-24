@@ -24,6 +24,7 @@
     "require": {
         "php": "^7.4",
         "ext-pdo": "*",
+        "ext-json": "*",
         "clue/socks-react": "^1.0",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",

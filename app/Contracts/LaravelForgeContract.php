@@ -2,7 +2,9 @@
 
 namespace App\Contracts;
 
+use App\Integrations\Laravel\Forge\Entities\Server;
 use App\Token;
+use Illuminate\Support\Collection;
 
 interface LaravelForgeContract
 {
@@ -21,4 +23,11 @@ interface LaravelForgeContract
      * @return string
      */
     public function user(): string;
+
+    /**
+     * Returns collection of servers.
+     *
+     * @return Collection|Server[]
+     */
+    public function servers(): Collection;
 }

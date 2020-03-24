@@ -74,4 +74,14 @@ interface TelegramBotContract
      * @throws TelegramBotException
      */
     public function sendChatAction(ChatAction $chatAction): void;
+
+    /**
+     * Edits a message.
+     *
+     * @param OutboundMessage $message
+     *
+     * @return void
+     * @throws TelegramBotException
+     */
+    public function editMessage(OutboundMessage $message): void;
 }

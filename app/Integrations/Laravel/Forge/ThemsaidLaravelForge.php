@@ -6,7 +6,9 @@ use App\Contracts\LaravelForgeContract;
 use App\Integrations\Laravel\Forge\Exceptions\LaravelForgeException;
 use App\Token;
 use Exception;
+use Illuminate\Support\Collection;
 use Themsaid\Forge\Forge;
+use Themsaid\Forge\Resources\Server;
 
 class ThemsaidLaravelForge implements LaravelForgeContract
 {
@@ -47,5 +49,19 @@ class ThemsaidLaravelForge implements LaravelForgeContract
         }
 
         return "{$user->name} <{$user->email}>";
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function servers(): Collection
+    {
+        try {
+            return collect($this->forge->servers())->map(function (Server $server) {
+                return new Entities\Server($server->id, $server->name, $server->ipAddress);
+            });
+        } catch (Exception $e) {
+            throw new LaravelForgeException($e->getMessage());
+        }
     }
 }

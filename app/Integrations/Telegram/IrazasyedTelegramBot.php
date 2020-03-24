@@ -5,6 +5,7 @@ namespace App\Integrations\Telegram;
 use App\Contracts\TelegramBotContract;
 use App\Integrations\Telegram\Commands\Irazasyed\AddTokenCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\HelpCommand;
+use App\Integrations\Telegram\Commands\Irazasyed\MenuCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\StartCommand;
 use App\Integrations\Telegram\Entities\ChatAction;
 use App\Integrations\Telegram\Entities\OutboundMessage;
@@ -45,6 +46,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
             HelpCommand::class,
             StartCommand::class,
             AddTokenCommand::class,
+            MenuCommand::class,
         ]);
     }
 
@@ -124,17 +126,49 @@ class IrazasyedTelegramBot implements TelegramBotContract
     /**
      * Finds current dialog and processes it.
      *
-     * @param string $text
+     * @param Update $update
      *
      * @return void
      */
-    private function processDialog(string $text)
+    private function processDialog(Update $update): void
     {
+        if (!$update->isType('message')) {
+            return;
+        }
+
         $currentDialog = Auth::user()->dialogs()->current()->first();
 
         if ($currentDialog !== null) {
-            $currentDialog->nextStep($text);
+            $currentDialog->nextStep($update->getMessage()->getText());
         }
+    }
+
+    /**
+     * Gets callback data and sends it to menu manager.
+     *
+     * @param Update $update
+     *
+     * @return void
+     */
+    private function processCallbackQuery(Update $update): void
+    {
+        MenuManager::make(Auth::user(), $update->getCallbackQuery()->getMessage()->getMessageId())
+            ->handle($update->getCallbackQuery()->getData());
+    }
+
+    /**
+     * Runs a command if it finds one.
+     *
+     * @param Update $update
+     *
+     * @return void
+     */
+    private function processCommand(Update $update): void
+    {
+        // Every command will finish all current user's dialogs.
+        Auth::user()->finishCurrentDialogs();
+
+        $this->telegram->processCommand($update);
     }
 
     /**
@@ -171,12 +205,12 @@ class IrazasyedTelegramBot implements TelegramBotContract
         logger()->debug('New update from Telegram', $request->all());
         $update = new Update($request->all());
 
-        if ($this->updateIsCommand($update)) {
-            // Every command will finish all current user's dialogs.
-            Auth::user()->finishCurrentDialogs();
-            $this->telegram->processCommand($update);
+        if ($update->isType('callback_query')) {
+            $this->processCallbackQuery($update);
+        } else if ($this->updateIsCommand($update)) {
+            $this->processCommand($update);
         } else {
-            $this->processDialog($update->getMessage()->getText());
+            $this->processDialog($update);
         }
     }
 
@@ -199,6 +233,18 @@ class IrazasyedTelegramBot implements TelegramBotContract
     {
         try {
             $this->telegram->sendChatAction($chatAction->toArray());
+        } catch (TelegramSDKException $e) {
+            throw new TelegramBotException($e->getMessage());
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function editMessage(OutboundMessage $message): void
+    {
+        try {
+            $this->telegram->editMessageText($message->toArray());
         } catch (TelegramSDKException $e) {
             throw new TelegramBotException($e->getMessage());
         }

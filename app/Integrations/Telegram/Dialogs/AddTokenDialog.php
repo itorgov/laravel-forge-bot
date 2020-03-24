@@ -19,6 +19,13 @@ class AddTokenDialog implements DialogContract
      */
     private Dialog $dialog;
 
+    /**
+     * AddTokenDialog constructor.
+     *
+     * @param Dialog $dialog
+     *
+     * @return void
+     */
     private function __construct(Dialog $dialog)
     {
         $this->dialog = $dialog;
@@ -170,7 +177,7 @@ class AddTokenDialog implements DialogContract
     {
         OutboundMessage::make(
             $this->dialog->user,
-            'You succesfully added your Laravel Forge API token. You can add another one by using /addtoken command.'
+            'You succesfully added your Laravel Forge API token. You can add another one by using /addtoken command. Now you can use /menu command.'
         )->send();
     }
 }

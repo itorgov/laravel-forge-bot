@@ -3,12 +3,12 @@
 namespace Tests\Unit\Integrations\Telegram;
 
 use App\Integrations\Telegram\Exceptions\TelegramBotException;
-use App\Integrations\Telegram\IrazasyedTelegramBotApi;
+use App\Integrations\Telegram\IrazasyedTelegramBot;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
-class IrazasyedTelegramBotApiTest extends TestCase
+class IrazasyedTelegramBotTest extends TestCase
 {
     private function rawRequest(string $methodName, $data = []): Response
     {
@@ -24,7 +24,7 @@ class IrazasyedTelegramBotApiTest extends TestCase
      */
     public function can_succsessfuly_set_a_webhook_url()
     {
-        $telegram = new IrazasyedTelegramBotApi(env('TELEGRAM_BOT_API_KEY'));
+        $telegram = new IrazasyedTelegramBot(env('TELEGRAM_BOT_API_KEY'));
         $this->rawRequest('deleteWebhook');
 
         tap($this->rawRequest('getWebhookInfo')->json(), function ($body) {
@@ -47,7 +47,7 @@ class IrazasyedTelegramBotApiTest extends TestCase
     public function cannot_set_an_invalid_webhook_url()
     {
         $this->expectException(TelegramBotException::class);
-        $telegram = new IrazasyedTelegramBotApi(env('TELEGRAM_BOT_API_KEY'));
+        $telegram = new IrazasyedTelegramBot(env('TELEGRAM_BOT_API_KEY'));
 
         sleep(1); // To avoid 429 error;
         $telegram->setWebhook('invalid-url');
@@ -58,7 +58,7 @@ class IrazasyedTelegramBotApiTest extends TestCase
      */
     public function can_succsessfuly_delete_a_webhook()
     {
-        $telegram = new IrazasyedTelegramBotApi(env('TELEGRAM_BOT_API_KEY'));
+        $telegram = new IrazasyedTelegramBot(env('TELEGRAM_BOT_API_KEY'));
         sleep(1); // To avoid 429 error;
         $telegram->setWebhook(route('integrations.telegram.webhook'));
 

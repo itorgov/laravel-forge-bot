@@ -86,6 +86,20 @@ class OutboundMessage implements Arrayable
     }
 
     /**
+     * Adds inline keyboard to the message.
+     *
+     * @param InlineKeyboard $keyboard
+     *
+     * @return $this
+     */
+    public function withInlineKeyboard(InlineKeyboard $keyboard): self
+    {
+        $this->params['reply_markup'] = json_encode($keyboard->toArray());
+
+        return $this;
+    }
+
+    /**
      * Sends message to the user.
      *
      * @return void
@@ -93,6 +107,20 @@ class OutboundMessage implements Arrayable
     public function send(): void
     {
         TelegramBot::sendMessage($this);
+    }
+
+    /**
+     * Edits message by it's id.
+     *
+     * @param int $id
+     *
+     * @return void
+     */
+    public function edit(int $id): void
+    {
+        $this->params['message_id'] = $id;
+        TelegramBot::editMessage($this);
+        unset($this->params['message_id']);
     }
 
     /**
