@@ -64,4 +64,18 @@ class ThemsaidLaravelForge implements LaravelForgeContract
             throw new LaravelForgeException($e->getMessage());
         }
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function server(int $serverId): Entities\Server
+    {
+        try {
+            $server = $this->forge->server($serverId);
+
+            return new Entities\Server($server->id, $server->name, $server->ipAddress);
+        } catch (Exception $e) {
+            throw new LaravelForgeException($e->getMessage());
+        }
+    }
 }

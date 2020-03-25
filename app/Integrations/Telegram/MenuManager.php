@@ -17,6 +17,7 @@ class MenuManager
 {
     private const SCREEN_TOKENS = 'tokens';
     private const SCREEN_SERVERS = 'servers';
+    private const SCREEN_SERVER = 'server';
 
     private Menu $menu;
 
@@ -30,7 +31,7 @@ class MenuManager
      */
     private function __construct(User $user, $messageId)
     {
-        $this->menu = Menu::query()->with('user')->firstOrCreate([
+        $this->menu = Menu::query()->with('user', 'token')->firstOrCreate([
             'user_id' => $user->id,
             'message_id' => $messageId,
         ]);
@@ -64,18 +65,32 @@ class MenuManager
     {
         $parsedData = $this->parseCallbackData($callbackData);
 
+        // Reset the menu if token missed and it's not a select token screen.
+        if ($this->menu->token === null && $parsedData['type'] !== self::SCREEN_TOKENS) {
+            $this->resetMenu();
+
+            return;
+        }
+
         switch ($parsedData['type']) {
             case self::SCREEN_TOKENS:
                 $token = $this->menu->user->tokens()->find($parsedData['data']);
 
                 if ($token !== null) {
-                    $this->menu->token()->associate($token);
-                    $this->showServersScreen();
+                    $this->goToServersScreen($token);
                 } else {
-                    $this->resetMenu();
+                    $this->backToTokensScreen();
                 }
 
                 break;
+
+            case self::SCREEN_SERVERS:
+                if (!empty($parsedData['data'])) {
+                    $server = LaravelForge::setToken($this->menu->token)->server($parsedData['data']);
+                    $this->goToServerScreen($server);
+                } else {
+                    $this->backToServersScreen();
+                }
         }
     }
 
@@ -86,7 +101,12 @@ class MenuManager
      */
     private function resetMenu(): void
     {
-        $this->menu->token()->dissociate();
+        $this->menu->update([
+            'token_id' => null,
+            'server_id' => null,
+            'server_name' => null,
+        ]);
+
         $this->showTokensScreen();
     }
 
@@ -126,6 +146,30 @@ class MenuManager
     }
 
     /**
+     * Syntactic shugar. Just for readability.
+     *
+     * @return void
+     */
+    private function backToTokensScreen(): void
+    {
+        $this->resetMenu();
+    }
+
+    /**
+     * Opens the servers screen.
+     *
+     * @param Token $token
+     *
+     * @return void
+     */
+    private function goToServersScreen(Token $token): void
+    {
+        $this->menu->token()->associate($token);
+        $this->menu->save();
+        $this->showServersScreen();
+    }
+
+    /**
      * The second screen.
      * Shows list of servers for chosen token.
      *
@@ -142,7 +186,65 @@ class MenuManager
 
         $buttons = $buttons->row()->button($this->backButton(self::SCREEN_TOKENS));
 
-        OutboundMessage::make($this->menu->user, "*{$this->menu->token->name}*\n\nChoose your token:")
+        OutboundMessage::make($this->menu->user, "*{$this->menu->token->name}*\n\nChoose your server:")
+            ->parseMode(OutboundMessage::PARSE_MODE_MARKDOWN)
+            ->withInlineKeyboard($buttons)
+            ->edit($this->menu->message_id);
+    }
+
+    /**
+     * Returns user to the servers screen.
+     *
+     * @return void
+     */
+    private function backToServersScreen(): void
+    {
+        $this->menu->update([
+            'server_id' => null,
+            'server_name' => null,
+        ]);
+
+        $this->showServersScreen();
+    }
+
+    /**
+     * Opens the server screen.
+     *
+     * @param Server $server
+     *
+     * @return void
+     */
+    private function goToServerScreen(Server $server): void
+    {
+        $this->menu->update([
+            'server_id' => $server->id,
+            'server_name' => "{$server->name} ({$server->ip})",
+        ]);
+
+        $this->showServerScreen();
+    }
+
+    /**
+     * The third screen.
+     * Shows action which user can do with a server.
+     * Also shows server's sites.
+     *
+     * @return void
+     */
+    private function showServerScreen(): void
+    {
+        $buttons = InlineKeyboard::make()
+            ->button(InlineKeyboardButton::make('Reboot server')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, 'reboot')))
+            ->row()
+            ->button(InlineKeyboardButton::make('Reboot MySQL')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, 'reboot-mysql')))
+            ->button(InlineKeyboardButton::make('Reboot PostgreSQL')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, 'reboot-postgresql')))
+            ->row()
+            ->button(InlineKeyboardButton::make('Reboot PHP')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, 'reboot-php')))
+            ->button(InlineKeyboardButton::make('Reboot NGINX')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, 'reboot-nginx')))
+            ->row()
+            ->button($this->backButton(self::SCREEN_SERVERS));
+
+        OutboundMessage::make($this->menu->user, "*{$this->menu->token->name}*\n\n*Server*: {$this->menu->server_name}\n\nWhat do you want to do with the server?")
             ->parseMode(OutboundMessage::PARSE_MODE_MARKDOWN)
             ->withInlineKeyboard($buttons)
             ->edit($this->menu->message_id);

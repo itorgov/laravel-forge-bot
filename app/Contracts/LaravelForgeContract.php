@@ -30,4 +30,13 @@ interface LaravelForgeContract
      * @return Collection|Server[]
      */
     public function servers(): Collection;
+
+    /**
+     * Returns a server by its id.
+     *
+     * @param int $serverId
+     *
+     * @return Server
+     */
+    public function server(int $serverId): Server;
 }
