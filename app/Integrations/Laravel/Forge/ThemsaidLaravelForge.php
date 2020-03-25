@@ -78,4 +78,64 @@ class ThemsaidLaravelForge implements LaravelForgeContract
             throw new LaravelForgeException($e->getMessage());
         }
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function rebootServer(int $serverId): void
+    {
+        try {
+            $this->forge->rebootServer($serverId);
+        } catch (Exception $e) {
+            throw new LaravelForgeException($e->getMessage());
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function rebootMysql(int $serverId): void
+    {
+        try {
+            $this->forge->rebootMysql($serverId);
+        } catch (Exception $e) {
+            throw new LaravelForgeException($e->getMessage());
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function rebootPostgresql(int $serverId): void
+    {
+        try {
+            $this->forge->rebootPostgres($serverId);
+        } catch (Exception $e) {
+            throw new LaravelForgeException($e->getMessage());
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function rebootPhp(int $serverId): void
+    {
+        try {
+            $this->forge->rebootPHP($serverId);
+        } catch (Exception $e) {
+            throw new LaravelForgeException($e->getMessage());
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function rebootNginx(int $serverId): void
+    {
+        try {
+            $this->forge->rebootNginx($serverId);
+        } catch (Exception $e) {
+            throw new LaravelForgeException($e->getMessage());
+        }
+    }
 }

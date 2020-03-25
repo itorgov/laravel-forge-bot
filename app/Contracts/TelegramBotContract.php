@@ -2,6 +2,7 @@
 
 namespace App\Contracts;
 
+use App\Integrations\Telegram\Entities\CallbackQueryAnswer;
 use App\Integrations\Telegram\Entities\ChatAction;
 use App\Integrations\Telegram\Entities\OutboundMessage;
 use App\Integrations\Telegram\Entities\WebhookInfoResponse;
@@ -84,4 +85,13 @@ interface TelegramBotContract
      * @throws TelegramBotException
      */
     public function editMessage(OutboundMessage $message): void;
+
+    /**
+     * Sends answer to callback query sent from inline keyboard.
+     *
+     * @param CallbackQueryAnswer $answer
+     *
+     * @return void
+     */
+    public function answerCallbackQuery(CallbackQueryAnswer $answer): void;
 }

@@ -4,6 +4,7 @@ namespace App\Integrations\Telegram;
 
 use App\Facades\LaravelForge;
 use App\Integrations\Laravel\Forge\Entities\Server;
+use App\Integrations\Telegram\Entities\CallbackQueryAnswer;
 use App\Integrations\Telegram\Entities\InlineKeyboard;
 use App\Integrations\Telegram\Entities\InlineKeyboardButton;
 use App\Integrations\Telegram\Entities\OutboundMessage;
@@ -18,6 +19,12 @@ class MenuManager
     private const SCREEN_TOKENS = 'tokens';
     private const SCREEN_SERVERS = 'servers';
     private const SCREEN_SERVER = 'server';
+
+    private const SERVER_REBOOT = 'reboot';
+    private const SERVER_REBOOT_MYSQL = 'reboot-mysql';
+    private const SERVER_REBOOT_POSTRGESQL = 'reboot-postgresql';
+    private const SERVER_REBOOT_PHP = 'reboot-php';
+    private const SERVER_REBOOT_NGINX = 'reboot-nginx';
 
     private Menu $menu;
 
@@ -55,15 +62,16 @@ class MenuManager
     }
 
     /**
-     * Handles returned data (callback data) from user's action.
+     * Handles returned id and data from callback.
      *
-     * @param string $callbackData
+     * @param string $id
+     * @param string $data
      *
      * @return void
      */
-    public function handle(string $callbackData): void
+    public function handle(string $id, string $data): void
     {
-        $parsedData = $this->parseCallbackData($callbackData);
+        $parsedData = $this->parseCallbackData($data);
 
         // Reset the menu if token missed and it's not a select token screen.
         if ($this->menu->token === null && $parsedData['type'] !== self::SCREEN_TOKENS) {
@@ -78,8 +86,6 @@ class MenuManager
 
                 if ($token !== null) {
                     $this->goToServersScreen($token);
-                } else {
-                    $this->backToTokensScreen();
                 }
 
                 break;
@@ -89,8 +95,40 @@ class MenuManager
                     $server = LaravelForge::setToken($this->menu->token)->server($parsedData['data']);
                     $this->goToServerScreen($server);
                 } else {
-                    $this->backToServersScreen();
+                    $this->backToTokensScreen();
                 }
+
+                break;
+
+            case self::SCREEN_SERVER:
+                switch ($parsedData['data']) {
+                    case self::SERVER_REBOOT:
+                        LaravelForge::setToken($this->menu->token)->rebootServer($this->menu->server_id);
+                        CallbackQueryAnswer::make($id, 'Rebooting Server (give it a minute)...')->showAsModal()->send();
+                        break;
+                    case self::SERVER_REBOOT_MYSQL:
+                        LaravelForge::setToken($this->menu->token)->rebootMysql($this->menu->server_id);
+                        CallbackQueryAnswer::make($id, 'Rebooting MySQL Server...')->showAsModal()->send();
+                        break;
+                    case self::SERVER_REBOOT_POSTRGESQL:
+                        LaravelForge::setToken($this->menu->token)->rebootPostgresql($this->menu->server_id);
+                        CallbackQueryAnswer::make($id, 'Rebooting Postgres Server...')->showAsModal()->send();
+                        break;
+                    case self::SERVER_REBOOT_PHP:
+                        LaravelForge::setToken($this->menu->token)->rebootPhp($this->menu->server_id);
+                        CallbackQueryAnswer::make($id, 'Rebooting PHP...')->showAsModal()->send();
+                        break;
+                    case self::SERVER_REBOOT_NGINX:
+                        LaravelForge::setToken($this->menu->token)->rebootNginx($this->menu->server_id);
+                        CallbackQueryAnswer::make($id, 'Rebooting Nginx Server...')->showAsModal()->send();
+                        break;
+                    default:
+                        if (empty($parsedData['data'])) {
+                            $this->backToServersScreen();
+                        }
+                }
+
+                break;
         }
     }
 
@@ -184,7 +222,7 @@ class MenuManager
             $buttons = $buttons->row()->button($this->serverButton($server));
         }
 
-        $buttons = $buttons->row()->button($this->backButton(self::SCREEN_TOKENS));
+        $buttons = $buttons->row()->button($this->backToTokensButton());
 
         OutboundMessage::make($this->menu->user, "*{$this->menu->token->name}*\n\nChoose your server:")
             ->parseMode(OutboundMessage::PARSE_MODE_MARKDOWN)
@@ -234,17 +272,21 @@ class MenuManager
     private function showServerScreen(): void
     {
         $buttons = InlineKeyboard::make()
-            ->button(InlineKeyboardButton::make('Reboot server')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, 'reboot')))
+            ->button(InlineKeyboardButton::make('Reboot Server')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, self::SERVER_REBOOT)))
             ->row()
-            ->button(InlineKeyboardButton::make('Reboot MySQL')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, 'reboot-mysql')))
-            ->button(InlineKeyboardButton::make('Reboot PostgreSQL')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, 'reboot-postgresql')))
+            ->button(InlineKeyboardButton::make('Reboot MySQL')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, self::SERVER_REBOOT_MYSQL)))
+            ->button(InlineKeyboardButton::make('Reboot PostgreSQL')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, self::SERVER_REBOOT_POSTRGESQL)))
             ->row()
-            ->button(InlineKeyboardButton::make('Reboot PHP')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, 'reboot-php')))
-            ->button(InlineKeyboardButton::make('Reboot NGINX')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, 'reboot-nginx')))
+            ->button(InlineKeyboardButton::make('Reboot PHP')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, self::SERVER_REBOOT_PHP)))
+            ->button(InlineKeyboardButton::make('Reboot NGINX')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, self::SERVER_REBOOT_NGINX)))
             ->row()
-            ->button($this->backButton(self::SCREEN_SERVERS));
+            ->button($this->backToServersButton());
 
-        OutboundMessage::make($this->menu->user, "*{$this->menu->token->name}*\n\n*Server*: {$this->menu->server_name}\n\nWhat do you want to do with the server?")
+        OutboundMessage::make(
+            $this->menu->user,
+            "*{$this->menu->token->name}*\n*Server*: {$this->menu->server_name}\n\n" .
+            "What do you want to do with the server? If you want manage server's sites just select needed one."
+        )
             ->parseMode(OutboundMessage::PARSE_MODE_MARKDOWN)
             ->withInlineKeyboard($buttons)
             ->edit($this->menu->message_id);
@@ -253,7 +295,7 @@ class MenuManager
     /**
      * Makes a "Back" button for selected screen.
      *
-     * @param string $screen Target screen (typically it's previous).
+     * @param string $screen Current screen.
      *
      * @return InlineKeyboardButton
      */
@@ -261,6 +303,26 @@ class MenuManager
     {
         return InlineKeyboardButton::make('Back')
             ->callbackData($this->generateCallbackData($screen, ''));
+    }
+
+    /**
+     * "Back" button on "Servers" screen.
+     *
+     * @return InlineKeyboardButton
+     */
+    private function backToTokensButton()
+    {
+        return $this->backButton(self::SCREEN_SERVERS);
+    }
+
+    /**
+     * "Back" button on "Server" screen.
+     *
+     * @return InlineKeyboardButton
+     */
+    private function backToServersButton()
+    {
+        return $this->backButton(self::SCREEN_SERVER);
     }
 
     /**

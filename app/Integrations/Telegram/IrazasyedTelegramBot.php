@@ -7,6 +7,7 @@ use App\Integrations\Telegram\Commands\Irazasyed\AddTokenCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\HelpCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\MenuCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\StartCommand;
+use App\Integrations\Telegram\Entities\CallbackQueryAnswer;
 use App\Integrations\Telegram\Entities\ChatAction;
 use App\Integrations\Telegram\Entities\OutboundMessage;
 use App\Integrations\Telegram\Entities\WebhookInfoResponse;
@@ -153,7 +154,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
     private function processCallbackQuery(Update $update): void
     {
         MenuManager::make(Auth::user(), $update->getCallbackQuery()->getMessage()->getMessageId())
-            ->handle($update->getCallbackQuery()->getData());
+            ->handle($update->getCallbackQuery()->getId(), $update->getCallbackQuery()->getData());
     }
 
     /**
@@ -245,6 +246,18 @@ class IrazasyedTelegramBot implements TelegramBotContract
     {
         try {
             $this->telegram->editMessageText($message->toArray());
+        } catch (TelegramSDKException $e) {
+            throw new TelegramBotException($e->getMessage());
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function answerCallbackQuery(CallbackQueryAnswer $answer): void
+    {
+        try {
+            $this->telegram->answerCallbackQuery($answer->toArray());
         } catch (TelegramSDKException $e) {
             throw new TelegramBotException($e->getMessage());
         }
