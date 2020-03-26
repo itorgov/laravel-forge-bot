@@ -9,6 +9,8 @@ use Exception;
 use Illuminate\Support\Collection;
 use Themsaid\Forge\Forge;
 use Themsaid\Forge\Resources\Server;
+use Themsaid\Forge\Resources\Site;
+use Themsaid\Forge\Resources\Webhook;
 
 class ThemsaidLaravelForge implements LaravelForgeContract
 {
@@ -134,6 +136,74 @@ class ThemsaidLaravelForge implements LaravelForgeContract
     {
         try {
             $this->forge->rebootNginx($serverId);
+        } catch (Exception $e) {
+            throw new LaravelForgeException($e->getMessage());
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function sites(int $serverId): Collection
+    {
+        try {
+            return collect($this->forge->sites($serverId))->map(function (Site $site) {
+                return new Entities\Site($site->id, $site->name);
+            });
+        } catch (Exception $e) {
+            throw new LaravelForgeException($e->getMessage());
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function site(int $serverId, int $siteId): Entities\Site
+    {
+        try {
+            $site = $this->forge->site($serverId, $siteId);
+
+            return new Entities\Site($site->id, $site->name);
+        } catch (Exception $e) {
+            throw new LaravelForgeException($e->getMessage());
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function deploySite(int $serverId, int $siteId): void
+    {
+        try {
+            $this->forge->deploySite($serverId, $siteId, false);
+        } catch (Exception $e) {
+            throw new LaravelForgeException($e->getMessage());
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function webhooks(int $serverId, int $siteId): Collection
+    {
+        try {
+            return collect($this->forge->webhooks($serverId, $siteId))->map(function (Webhook $webhook) {
+                return new Entities\Webhook($webhook->id, $webhook->url);
+            });
+        } catch (Exception $e) {
+            throw new LaravelForgeException($e->getMessage());
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createWebhook(int $serverId, int $siteId, string $url): void
+    {
+        try {
+            $this->forge->createWebhook($serverId, $siteId, [
+                'url' => $url,
+            ]);
         } catch (Exception $e) {
             throw new LaravelForgeException($e->getMessage());
         }

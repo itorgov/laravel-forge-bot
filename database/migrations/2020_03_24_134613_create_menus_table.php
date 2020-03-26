@@ -20,6 +20,9 @@ class CreateMenusTable extends Migration
             $table->foreignId('token_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('set null');
             $table->unsignedBigInteger('server_id')->nullable()->comment('Laravel Forge\'s server ID.');
             $table->string('server_name')->nullable()->comment('Laravel Forge\'s server name.');
+            $table->unsignedBigInteger('site_id')->nullable()->comment('Laravel Forge\'s site ID.');
+            $table->string('site_name')->nullable()->comment('Laravel Forge\'s site name.');
+            $table->string('waiting_message_for')->nullable();
             $table->timestamps();
         });
     }

@@ -4,6 +4,8 @@ namespace App\Integrations\Telegram;
 
 use App\Facades\LaravelForge;
 use App\Integrations\Laravel\Forge\Entities\Server;
+use App\Integrations\Laravel\Forge\Entities\Site;
+use App\Integrations\Laravel\Forge\Entities\Webhook;
 use App\Integrations\Telegram\Entities\CallbackQueryAnswer;
 use App\Integrations\Telegram\Entities\InlineKeyboard;
 use App\Integrations\Telegram\Entities\InlineKeyboardButton;
@@ -19,12 +21,20 @@ class MenuManager
     private const SCREEN_TOKENS = 'tokens';
     private const SCREEN_SERVERS = 'servers';
     private const SCREEN_SERVER = 'server';
+    private const SCREEN_SITE = 'site';
+    private const SCREEN_ADD_WEBHOOK = 'add-webhook';
 
     private const SERVER_REBOOT = 'reboot';
     private const SERVER_REBOOT_MYSQL = 'reboot-mysql';
     private const SERVER_REBOOT_POSTRGESQL = 'reboot-postgresql';
     private const SERVER_REBOOT_PHP = 'reboot-php';
     private const SERVER_REBOOT_NGINX = 'reboot-nginx';
+
+    private const SITE_DEPLOY = 'deploy';
+    private const SITE_ADD_WEBHOOK = 'add-webhook';
+
+    private const ADD_WEBHOOK_THIS = 'this';
+    private const ADD_WEBHOOK_ANOTHER = 'another';
 
     private Menu $menu;
 
@@ -91,11 +101,11 @@ class MenuManager
                 break;
 
             case self::SCREEN_SERVERS:
-                if (!empty($parsedData['data'])) {
+                if (empty($parsedData['data'])) {
+                    $this->backToTokensScreen();
+                } else {
                     $server = LaravelForge::setToken($this->menu->token)->server($parsedData['data']);
                     $this->goToServerScreen($server);
-                } else {
-                    $this->backToTokensScreen();
                 }
 
                 break;
@@ -123,9 +133,63 @@ class MenuManager
                         CallbackQueryAnswer::make($id, 'Rebooting Nginx Server...')->showAsModal()->send();
                         break;
                     default:
-                        if (empty($parsedData['data'])) {
+                        $siteId = $parsedData['data'];
+
+                        if (empty($siteId)) {
                             $this->backToServersScreen();
+                        } else {
+                            $site = LaravelForge::setToken($this->menu->token)->site($this->menu->server_id, $siteId);
+                            $this->goToSiteScreen($site);
                         }
+                }
+
+                break;
+
+            case self::SCREEN_SITE:
+                switch ($parsedData['data']) {
+                    case self::SITE_DEPLOY:
+                        LaravelForge::setToken($this->menu->token)->deploySite($this->menu->server_id, $this->menu->site_id);
+                        CallbackQueryAnswer::make($id, 'Deploying pushed code...')->showAsModal()->send();
+
+                        break;
+
+                    case self::SITE_ADD_WEBHOOK:
+                        $this->goToAddWebhookScreen();
+
+                        break;
+
+                    default:
+                        $webhookId = $parsedData['data'];
+
+                        if (empty($webhookId)) {
+                            $this->backToServerScreen();
+                        } else {
+                            // Go to webhook page.
+                        }
+                }
+
+                break;
+
+            case self::SCREEN_ADD_WEBHOOK:
+                switch ($parsedData['data']) {
+                    case self::ADD_WEBHOOK_THIS:
+                        LaravelForge::setToken($this->menu->token)->createWebhook(
+                            $this->menu->server_id,
+                            $this->menu->site_id,
+                            $this->menu->user->forgeWebhookUrl()
+                        );
+                        CallbackQueryAnswer::make($id, 'Deployment Webhook successfully added!')->send();
+                        $this->backToSiteScreen();
+
+                        break;
+
+                    case self::ADD_WEBHOOK_ANOTHER:
+                        //
+
+                        break;
+
+                    default:
+                        $this->backToSiteScreen();
                 }
 
                 break;
@@ -143,6 +207,9 @@ class MenuManager
             'token_id' => null,
             'server_id' => null,
             'server_name' => null,
+            'site_id' => null,
+            'site_name' => null,
+            'waiting_message_for' => null,
         ]);
 
         $this->showTokensScreen();
@@ -178,9 +245,7 @@ class MenuManager
             $buttons = $buttons->row()->button($this->tokenButton($token));
         }
 
-        OutboundMessage::make($this->menu->user, 'Choose your token:')
-            ->withInlineKeyboard($buttons)
-            ->edit($this->menu->message_id);
+        $this->updateMenu('Choose your token:', $buttons);
     }
 
     /**
@@ -224,10 +289,7 @@ class MenuManager
 
         $buttons = $buttons->row()->button($this->backToTokensButton());
 
-        OutboundMessage::make($this->menu->user, "*{$this->menu->token->name}*\n\nChoose your server:")
-            ->parseMode(OutboundMessage::PARSE_MODE_MARKDOWN)
-            ->withInlineKeyboard($buttons)
-            ->edit($this->menu->message_id);
+        $this->updateMenu("*{$this->menu->token->name}*\n\nChoose your server:", $buttons);
     }
 
     /**
@@ -271,6 +333,8 @@ class MenuManager
      */
     private function showServerScreen(): void
     {
+        $sites = LaravelForge::setToken($this->menu->token)->sites($this->menu->server_id);
+
         $buttons = InlineKeyboard::make()
             ->button(InlineKeyboardButton::make('Reboot Server')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, self::SERVER_REBOOT)))
             ->row()
@@ -278,15 +342,143 @@ class MenuManager
             ->button(InlineKeyboardButton::make('Reboot PostgreSQL')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, self::SERVER_REBOOT_POSTRGESQL)))
             ->row()
             ->button(InlineKeyboardButton::make('Reboot PHP')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, self::SERVER_REBOOT_PHP)))
-            ->button(InlineKeyboardButton::make('Reboot NGINX')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, self::SERVER_REBOOT_NGINX)))
-            ->row()
-            ->button($this->backToServersButton());
+            ->button(InlineKeyboardButton::make('Reboot NGINX')->callbackData($this->generateCallbackData(self::SCREEN_SERVER, self::SERVER_REBOOT_NGINX)));
 
-        OutboundMessage::make(
-            $this->menu->user,
+        foreach ($sites as $site) {
+            $buttons->row()->button($this->siteButton($site));
+        }
+
+        $buttons->row()->button($this->backToServersButton());
+
+        $this->updateMenu(
             "*{$this->menu->token->name}*\n*Server*: {$this->menu->server_name}\n\n" .
-            "What do you want to do with the server? If you want manage server's sites just select needed one."
-        )
+            "What do you want to do with the server? If you want manage server's sites just select needed one.",
+            $buttons
+        );
+    }
+
+    /**
+     * Returns user to the server screen.
+     *
+     * @return void
+     */
+    private function backToServerScreen(): void
+    {
+        $this->menu->update([
+            'site_id' => null,
+            'site_name' => null,
+        ]);
+
+        $this->showServerScreen();
+    }
+
+    /**
+     * Opens the site screen.
+     *
+     * @param Site $site
+     *
+     * @return void
+     */
+    private function goToSiteScreen(Site $site): void
+    {
+        $this->menu->update([
+            'site_id' => $site->id,
+            'site_name' => $site->name,
+        ]);
+
+        $this->showSiteScreen();
+    }
+
+    /**
+     * The fourth screen.
+     * Shows action which user can do with a site.
+     * Also shows site's webhooks.
+     *
+     * @return void
+     */
+    private function showSiteScreen(): void
+    {
+        $buttons = InlineKeyboard::make()
+            ->button(InlineKeyboardButton::make('Deploy Now')->callbackData($this->generateCallbackData(self::SCREEN_SITE, self::SITE_DEPLOY)))
+            ->row()
+            ->button(InlineKeyboardButton::make('Add Notification Webhook')->callbackData($this->generateCallbackData(self::SCREEN_SITE, self::SITE_ADD_WEBHOOK)));
+
+        $webhooks = LaravelForge::setToken($this->menu->token)->webhooks($this->menu->server_id, $this->menu->site_id);
+
+        foreach ($webhooks as $webhook) {
+            if ($webhook->isAlien()) {
+                continue;
+            }
+
+            $buttons->row()->button($this->webhookButton($webhook));
+        }
+
+        $buttons->row()->button($this->backToServerButton());
+
+        $this->updateMenu(
+            "*{$this->menu->token->name}*\n*Server*: {$this->menu->server_name}\n*Site*: {$this->menu->site_name}\n\n" .
+            "What do you want to do with the site? You can also manage your site's webhooks, you can see them at the bottom.",
+            $buttons
+        );
+    }
+
+    /**
+     * Returns user to the site screen.
+     *
+     * @return void
+     */
+    private function backToSiteScreen(): void
+    {
+        $this->menu->update([
+            'waiting_message_for' => null,
+        ]);
+
+        $this->showSiteScreen();
+    }
+
+    /**
+     * Opens the "Add Webhook" screen.
+     *
+     * @return void
+     */
+    private function goToAddWebhookScreen(): void
+    {
+        $this->showAddWebhookScreen();
+    }
+
+    /**
+     * The fifth screen.
+     * Determine chat for notifications.
+     *
+     * @return void
+     */
+    private function showAddWebhookScreen(): void
+    {
+        $buttons = InlineKeyboard::make()
+            ->button(InlineKeyboardButton::make('To this chat')->callbackData($this->generateCallbackData(self::SCREEN_ADD_WEBHOOK, self::ADD_WEBHOOK_THIS)))
+            ->row()
+            ->button(InlineKeyboardButton::make('To another chat')->callbackData($this->generateCallbackData(self::SCREEN_ADD_WEBHOOK, self::ADD_WEBHOOK_ANOTHER)));
+
+        $buttons->row()->button($this->backToSiteButton());
+
+        $this->updateMenu(
+            "*{$this->menu->token->name}*\n*Server*: {$this->menu->server_name}\n*Site*: {$this->menu->site_name}\n\n" .
+            "To which chat do you want to get deployment notifications?",
+            $buttons
+        );
+    }
+
+    /**
+     * Updates the menu message.
+     *
+     * @param string $text
+     * @param InlineKeyboard $buttons
+     *
+     * @return void
+     */
+    private function updateMenu(string $text, InlineKeyboard $buttons): void
+    {
+        OutboundMessage::make($this->menu->user, $text)
             ->parseMode(OutboundMessage::PARSE_MODE_MARKDOWN)
             ->withInlineKeyboard($buttons)
             ->edit($this->menu->message_id);
@@ -301,7 +493,7 @@ class MenuManager
      */
     private function backButton(string $screen)
     {
-        return InlineKeyboardButton::make('Back')
+        return InlineKeyboardButton::make('← Back')
             ->callbackData($this->generateCallbackData($screen, ''));
     }
 
@@ -323,6 +515,26 @@ class MenuManager
     private function backToServersButton()
     {
         return $this->backButton(self::SCREEN_SERVER);
+    }
+
+    /**
+     * "Back" button on "Site" screen.
+     *
+     * @return InlineKeyboardButton
+     */
+    private function backToServerButton()
+    {
+        return $this->backButton(self::SCREEN_SITE);
+    }
+
+    /**
+     * "Back" button on "Add Webhook" screen.
+     *
+     * @return InlineKeyboardButton
+     */
+    private function backToSiteButton()
+    {
+        return $this->backButton(self::SCREEN_ADD_WEBHOOK);
     }
 
     /**
@@ -349,6 +561,32 @@ class MenuManager
     {
         return InlineKeyboardButton::make("{$server->name} ({$server->ip})")
             ->callbackData($this->generateCallbackData(self::SCREEN_SERVERS, $server->id));
+    }
+
+    /**
+     * Makes a button for the third (server) screen.
+     *
+     * @param Site $site
+     *
+     * @return InlineKeyboardButton
+     */
+    private function siteButton(Site $site)
+    {
+        return InlineKeyboardButton::make("🌐 {$site->name}")
+            ->callbackData($this->generateCallbackData(self::SCREEN_SERVER, $site->id));
+    }
+
+    /**
+     * Makes a button for the fourth (site) screen.
+     *
+     * @param Webhook $webhook
+     *
+     * @return InlineKeyboardButton
+     */
+    private function webhookButton(Webhook $webhook)
+    {
+        return InlineKeyboardButton::make("💬 {$webhook->name()}")
+            ->callbackData($this->generateCallbackData(self::SCREEN_SITE, $webhook->id));
     }
 
     /**

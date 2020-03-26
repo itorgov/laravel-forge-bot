@@ -2,9 +2,11 @@
 
 namespace App;
 
+use App\Facades\Hashids;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Arr;
 
 class User extends Authenticatable
 {
@@ -18,7 +20,19 @@ class User extends Authenticatable
     protected $guarded = [];
 
     /**
-     * Finds and returns user by Telegram chat id.
+     * Finds and returns the user by Telegram chat id.
+     *
+     * @param string $chatId
+     *
+     * @return static
+     */
+    public static function findByTelegramChatId(string $chatId): ?self
+    {
+        return self::query()->where('telegram_chat_id', $chatId)->first();
+    }
+
+    /**
+     * Finds and returns the user by Telegram chat id.
      * Creates a new user if didn't find any.
      *
      * @param string $chatId
@@ -26,11 +40,59 @@ class User extends Authenticatable
      *
      * @return static
      */
-    public static function firstOrCreateForTelegramChatId(string $chatId, array $paramsForCreate = []): self
+    public static function findOrCreateByTelegramChatId(string $chatId, array $paramsForCreate = []): self
     {
         return self::query()->firstOrCreate([
             'telegram_chat_id' => $chatId,
         ], $paramsForCreate);
+    }
+
+    /**
+     * Finds the user by hash.
+     *
+     * @param string $hash
+     *
+     * @return static
+     */
+    public static function findByHash(string $hash): self
+    {
+        $id = Arr::first(Hashids::decode($hash));
+
+        return self::query()->find($id);
+    }
+
+    /**
+     * Finds the user by hash.
+     *
+     * @param string $hash
+     *
+     * @return static
+     */
+    public static function findOrFailByHash(string $hash): self
+    {
+        $id = Arr::first(Hashids::decode($hash));
+
+        return self::query()->findOrFail($id);
+    }
+
+    /**
+     * Returns a hash for user's id.
+     *
+     * @return string
+     */
+    public function hash()
+    {
+        return Hashids::encode($this->id);
+    }
+
+    /**
+     * Returns a URL for Laravel Forge webhook.
+     *
+     * @return string
+     */
+    public function forgeWebhookUrl(): string
+    {
+        return route('integrations.forge.webhook', ['hash' => $this->hash()]);
     }
 
     /**

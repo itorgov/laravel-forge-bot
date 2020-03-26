@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Facades\TelegramBot;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class TelegramBotController extends Controller
+class LaravelForgeController extends Controller
 {
     /**
-     * Handle an update from Telegram.
+     * Handle a request from Laravel Forge.
      *
      * @param Request $request
      *
@@ -17,7 +16,7 @@ class TelegramBotController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        TelegramBot::handle($request);
+        logger('Request from Laravel Forge', $request->all());
 
         return response('OK');
     }

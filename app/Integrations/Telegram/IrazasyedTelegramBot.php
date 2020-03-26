@@ -117,7 +117,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
                 $name = 'Unknown name';
         }
 
-        $user = User::firstOrCreateForTelegramChatId($chat->getId(), [
+        $user = User::findOrCreateByTelegramChatId($chat->getId(), [
             'name' => $name,
         ]);
 

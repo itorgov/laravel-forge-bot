@@ -3,6 +3,8 @@
 namespace App\Contracts;
 
 use App\Integrations\Laravel\Forge\Entities\Server;
+use App\Integrations\Laravel\Forge\Entities\Site;
+use App\Integrations\Laravel\Forge\Entities\Webhook;
 use App\Token;
 use Illuminate\Support\Collection;
 
@@ -84,4 +86,54 @@ interface LaravelForgeContract
      * @return void
      */
     public function rebootNginx(int $serverId): void;
+
+    /**
+     * Returns collection of server's sites.
+     *
+     * @param int $serverId
+     *
+     * @return Collection|Site[]
+     */
+    public function sites(int $serverId): Collection;
+
+    /**
+     * Returns a server's site.
+     *
+     * @param int $serverId
+     * @param int $siteId
+     *
+     * @return Site
+     */
+    public function site(int $serverId, int $siteId): Site;
+
+    /**
+     * Starts deploying the website.
+     *
+     * @param int $serverId
+     * @param int $siteId
+     *
+     * @return void
+     */
+    public function deploySite(int $serverId, int $siteId): void;
+
+    /**
+     * Returns collection of site's webhooks.
+     *
+     * @param int $serverId
+     * @param int $siteId
+     *
+     * @return Collection|Webhook[]
+     */
+    public function webhooks(int $serverId, int $siteId): Collection;
+
+    /**
+     * Creates a new deployment webhook.
+     *
+     * @param int $serverId
+     * @param int $siteId
+     * @param string $url
+     *
+     * @return void
+     */
+    public function createWebhook(int $serverId, int $siteId, string $url): void;
 }

@@ -6,6 +6,8 @@ use App\Contracts\LaravelForgeContract;
 use App\Contracts\TelegramBotContract;
 use App\Integrations\Laravel\Forge\ThemsaidLaravelForge;
 use App\Integrations\Telegram\IrazasyedTelegramBot;
+use Hashids\Hashids;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,9 +23,13 @@ class AppServiceProvider extends ServiceProvider
             return new IrazasyedTelegramBot(config('services.telegram.bot.api_key'));
         });
 
+        $this->app->bind(Hashids::class, function () {
+            // Don't think that somebody will want to change minimal hash lenght.
+            return new Hashids(config('app.key'), 20);
+        });
+
         $this->app->bind(TelegramBotContract::class, IrazasyedTelegramBot::class);
         $this->app->bind(LaravelForgeContract::class, ThemsaidLaravelForge::class);
-
     }
 
     /**
@@ -33,6 +39,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        URL::forceScheme('https');
     }
 }

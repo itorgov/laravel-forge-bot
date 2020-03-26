@@ -15,5 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post(
     'integrations/telegram/' . config('services.telegram.bot.webhook_token') . '/webhook',
-    'TelegramBotController@updates'
+    'TelegramBotController'
 )->middleware('auth.telegram')->name('integrations.telegram.webhook');
+
+Route::post('integrations/forge/webhook/{hash}', 'LaravelForgeController')
+    ->name('integrations.forge.webhook');
