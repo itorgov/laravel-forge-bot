@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Menu extends Model
 {
@@ -32,5 +33,25 @@ class Menu extends Model
     public function token(): BelongsTo
     {
         return $this->belongsTo(Token::class);
+    }
+
+    /**
+     * Current server.
+     *
+     * @return HasOne
+     */
+    public function server(): HasOne
+    {
+        return $this->hasOne(Server::class);
+    }
+
+    /**
+     * Current site.
+     *
+     * @return HasOne
+     */
+    public function site(): HasOne
+    {
+        return $this->hasOne(Site::class);
     }
 }

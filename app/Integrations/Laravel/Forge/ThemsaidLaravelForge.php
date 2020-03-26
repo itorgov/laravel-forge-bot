@@ -208,4 +208,16 @@ class ThemsaidLaravelForge implements LaravelForgeContract
             throw new LaravelForgeException($e->getMessage());
         }
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function deleteWebhook(int $serverId, int $siteId, int $webhookId): void
+    {
+        try {
+            $this->forge->deleteWebhook($serverId, $siteId, $webhookId);
+        } catch (Exception $e) {
+            throw new LaravelForgeException($e->getMessage());
+        }
+    }
 }

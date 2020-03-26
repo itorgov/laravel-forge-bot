@@ -2,7 +2,7 @@
 
 namespace App\Integrations\Telegram\Commands\Irazasyed;
 
-use App\Integrations\Telegram\MenuManager;
+use App\Integrations\Telegram\Menu\MenuManager;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Objects\Message;
 
@@ -34,6 +34,6 @@ class MenuCommand extends Command
             'action' => Actions::TYPING,
         ]);
 
-        MenuManager::make($this->user(), $message->getMessageId());
+        MenuManager::forMessageId($message->getMessageId());
     }
 }

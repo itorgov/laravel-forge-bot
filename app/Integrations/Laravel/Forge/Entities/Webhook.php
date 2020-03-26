@@ -44,7 +44,7 @@ class Webhook
             return $this->url;
         }
 
-        return "Notifications to \"$user->name\" channel";
+        return $user->name;
     }
 
     /**

@@ -136,4 +136,15 @@ interface LaravelForgeContract
      * @return void
      */
     public function createWebhook(int $serverId, int $siteId, string $url): void;
+
+    /**
+     * Deletes the deployment webhook.
+     *
+     * @param int $serverId
+     * @param int $siteId
+     * @param int $webhookId
+     *
+     * @return void
+     */
+    public function deleteWebhook(int $serverId, int $siteId, int $webhookId): void;
 }

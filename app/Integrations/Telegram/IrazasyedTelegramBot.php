@@ -13,6 +13,7 @@ use App\Integrations\Telegram\Entities\OutboundMessage;
 use App\Integrations\Telegram\Entities\WebhookInfoResponse;
 use App\Integrations\Telegram\Entities\WebhookResponse;
 use App\Integrations\Telegram\Exceptions\TelegramBotException;
+use App\Integrations\Telegram\Menu\MenuManager;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -153,8 +154,8 @@ class IrazasyedTelegramBot implements TelegramBotContract
      */
     private function processCallbackQuery(Update $update): void
     {
-        MenuManager::make(Auth::user(), $update->getCallbackQuery()->getMessage()->getMessageId())
-            ->handle($update->getCallbackQuery()->getId(), $update->getCallbackQuery()->getData());
+        MenuManager::forMessageId($update->getCallbackQuery()->getMessage()->getMessageId())
+            ->handleCallback($update->getCallbackQuery()->getId(), $update->getCallbackQuery()->getData());
     }
 
     /**
