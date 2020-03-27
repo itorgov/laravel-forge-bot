@@ -7,12 +7,13 @@ use App\Dialog;
 use App\Exceptions\Dialogs\InvalidDialogName;
 use App\Facades\LaravelForge;
 use App\Integrations\Laravel\Forge\Exceptions\LaravelForgeException;
+use App\Integrations\Telegram\Dialogs\Dialog as BaseDialog;
 use App\Integrations\Telegram\Entities\ChatAction;
 use App\Integrations\Telegram\Entities\OutboundMessage;
 use App\Token;
 use Illuminate\Support\Facades\Auth;
 
-class AddTokenDialog implements DialogContract
+class AddTokenDialog extends BaseDialog implements DialogContract
 {
     /**
      * @var Dialog $dialog
@@ -34,12 +35,13 @@ class AddTokenDialog implements DialogContract
     /**
      * @inheritDoc
      */
-    public static function start(): self
+    public static function start(array $additionalData = []): self
     {
         $dialog = Auth::user()->dialogs()->create([
             'name' => self::class,
             'data' => [
                 'token' => false,
+                'additional_data' => $additionalData,
             ],
         ]);
 

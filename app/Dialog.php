@@ -41,6 +41,20 @@ class Dialog extends Model
     }
 
     /**
+     * Returns dialog by its name.
+     *
+     * @param Builder $query
+     *
+     * @param string $name
+     *
+     * @return Builder
+     */
+    public function scopeNamed(Builder $query, string $name)
+    {
+        return $query->where('name', $name);
+    }
+
+    /**
      * Finishes the dialog.
      *
      * @return Dialog
@@ -67,11 +81,11 @@ class Dialog extends Model
     /**
      * Checks class name of the dialog.
      *
-     * @return bool
+     * @return void
      * @throws DialogClassNotFoundException
      * @throws DialogClassWrongContractException
      */
-    private function nameIsValid(): bool
+    private function validateName(): void
     {
         if (!class_exists($this->name)) {
             throw new DialogClassNotFoundException($this->name);
@@ -82,8 +96,6 @@ class Dialog extends Model
         if (empty($interfaces) || !in_array(DialogContract::class, $interfaces)) {
             throw new DialogClassWrongContractException($this->name);
         }
-
-        return true;
     }
 
     /**
@@ -91,13 +103,13 @@ class Dialog extends Model
      *
      * @param string $message
      *
-     * @return void
+     * @return Integrations\Telegram\Dialogs\Dialog
      */
-    public function nextStep(string $message): void
+    public function nextStep(string $message): Integrations\Telegram\Dialogs\Dialog
     {
-        if ($this->nameIsValid()) {
-            $this->name::next($this, $message);
-        }
+        $this->validateName();
+
+        return $this->name::next($this, $message);
     }
 
     /**

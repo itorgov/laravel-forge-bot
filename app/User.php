@@ -106,6 +106,29 @@ class User extends Authenticatable
     }
 
     /**
+     * Finishes all current user's menu dialogs.
+     *
+     * @return void
+     */
+    public function finishCurrentMenuDialogs(): void
+    {
+        $this->menus()->waitingMessage()->update([
+            'waiting_message_for' => null,
+        ]);
+    }
+
+    /**
+     * Finishes all current user's dialogs and menu dialogs.
+     *
+     * @return void
+     */
+    public function finishAllCurrentDialogs(): void
+    {
+        $this->finishCurrentDialogs();
+        $this->finishCurrentMenuDialogs();
+    }
+
+    /**
      * User's tokens.
      *
      * @return HasMany
@@ -123,5 +146,15 @@ class User extends Authenticatable
     public function dialogs(): HasMany
     {
         return $this->hasMany(Dialog::class);
+    }
+
+    /**
+     * User's menus.
+     *
+     * @return HasMany
+     */
+    public function menus(): HasMany
+    {
+        return $this->hasMany(Menu::class);
     }
 }

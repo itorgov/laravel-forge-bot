@@ -3,7 +3,6 @@
 namespace App\Integrations\Telegram\Commands\Irazasyed;
 
 use App\Integrations\Telegram\Menu\MenuManager;
-use Telegram\Bot\Actions;
 use Telegram\Bot\Objects\Message;
 
 class MenuCommand extends Command
@@ -28,10 +27,6 @@ class MenuCommand extends Command
         /** @var Message $message */
         $message = $this->replyWithMessage([
             'text' => 'Creating a new menu...',
-        ]);
-
-        $this->replyWithChatAction([
-            'action' => Actions::TYPING,
         ]);
 
         MenuManager::forMessageId($message->getMessageId());

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -14,6 +15,18 @@ class Menu extends Model
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * Menus which are waitig for an incoming message.
+     *
+     * @param Builder $query
+     *
+     * @return Builder
+     */
+    public function scopeWaitingMessage(Builder $query): Builder
+    {
+        return $query->whereNotNull('waiting_message_for');
+    }
 
     /**
      * User.

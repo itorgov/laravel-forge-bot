@@ -3,6 +3,7 @@
 namespace App\Integrations\Telegram\Menu;
 
 use App\Facades\LaravelForge;
+use App\Integrations\Telegram\Dialogs\AskForChatIdDialog;
 use App\Integrations\Telegram\Entities\CallbackQueryAnswer;
 use App\Integrations\Telegram\Menu\Screens\AddWebhookScreen;
 use App\Integrations\Telegram\Menu\Screens\ServerScreen;
@@ -97,6 +98,26 @@ class MenuManager
 
             case AddWebhookScreen::NAME:
                 $this->addWebhookScreenAction($id, $parsedData['data']);
+
+                break;
+        }
+    }
+
+    public function handleMessage(string $text): void
+    {
+        switch ($this->menu->waiting_message_for) {
+            case sprintf('%s,%s', AddWebhookScreen::NAME, AddWebhookScreen::ACTION_ANOTHER):
+                $currentDialog = Auth::user()->dialogs()->named(AskForChatIdDialog::class)->current()->first();
+
+                if ($currentDialog === null) {
+                    // Back to the "Site" screen.
+                    $this->screens->screen(SiteScreen::NAME)->show();
+                    break;
+                }
+
+                if ($currentDialog->nextStep($text)->isFinished()) {
+                    $this->addWebhookScreenAction($currentDialog->data['additional_data']['callback_id'], $text);
+                }
 
                 break;
         }
@@ -278,9 +299,32 @@ class MenuManager
                 break;
 
             case AddWebhookScreen::ACTION_ANOTHER:
-                // TODO
+                $this->menu->user->finishAllCurrentDialogs();
+                $this->menu->update([
+                    'waiting_message_for' => vsprintf('%s,%s', [
+                        AddWebhookScreen::NAME,
+                        AddWebhookScreen::ACTION_ANOTHER,
+                    ]),
+                ]);
+
+                AskForChatIdDialog::start([
+                    'callback_id' => $callbackId,
+                ]);
 
                 break;
+
+            default:
+                $user = User::findByTelegramChatId($callbackData);
+
+                LaravelForge::setToken($this->menu->token)->createWebhook(
+                    $this->menu->server->id,
+                    $this->menu->site->id,
+                    $user->forgeWebhookUrl()
+                );
+                CallbackQueryAnswer::make($callbackId, 'Deployment Webhook successfully added!')->send();
+
+                // Back to the "Site" screen.
+                $this->screens->screen(SiteScreen::NAME)->show();
         }
     }
 

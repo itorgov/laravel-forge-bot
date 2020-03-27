@@ -6,6 +6,7 @@ use App\Contracts\TelegramBotContract;
 use App\Integrations\Telegram\Commands\Irazasyed\AddTokenCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\HelpCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\MenuCommand;
+use App\Integrations\Telegram\Commands\Irazasyed\ShowChatIdCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\StartCommand;
 use App\Integrations\Telegram\Entities\CallbackQueryAnswer;
 use App\Integrations\Telegram\Entities\ChatAction;
@@ -45,8 +46,9 @@ class IrazasyedTelegramBot implements TelegramBotContract
         }
 
         $this->telegram->addCommands([
-            HelpCommand::class,
             StartCommand::class,
+            HelpCommand::class,
+            ShowChatIdCommand::class,
             AddTokenCommand::class,
             MenuCommand::class,
         ]);
@@ -167,8 +169,8 @@ class IrazasyedTelegramBot implements TelegramBotContract
      */
     private function processCommand(Update $update): void
     {
-        // Every command will finish all current user's dialogs.
-        Auth::user()->finishCurrentDialogs();
+        // Every command will finish all current user's dialogs and menu dialogs.
+        Auth::user()->finishAllCurrentDialogs();
 
         $this->telegram->processCommand($update);
     }
@@ -200,6 +202,52 @@ class IrazasyedTelegramBot implements TelegramBotContract
     }
 
     /**
+     * Removes the user from database and logout him if he was kicked from a chat.
+     * Return true if user was kicked, otherwise false.
+     *
+     * @param Update $update
+     *
+     * @return bool
+     */
+    private function botWasKickedFromChat(Update $update): bool
+    {
+        $leftUser = $update->getMessage()->getLeftChatMember();
+
+        if ($leftUser === null) {
+            return false;
+        }
+
+        if ($leftUser->getIsBot() && $leftUser->getUsername() === config('services.telegram.bot.username')) {
+            Auth::user()->delete();
+            Auth::logout();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determines if a message was sent for a dialog in some menu.
+     *
+     * @param Update $update
+     *
+     * @return bool
+     */
+    private function messageForMenu(Update $update): bool
+    {
+        $menu = Auth::user()->menus()->waitingMessage()->first();
+
+        if ($menu === null) {
+            return false;
+        }
+
+        MenuManager::forMessageId($menu->message_id)->handleMessage($update->getMessage()->getText());
+
+        return true;
+    }
+
+    /**
      * @inheritDoc
      */
     public function handle(Request $request): void
@@ -209,9 +257,19 @@ class IrazasyedTelegramBot implements TelegramBotContract
 
         if ($update->isType('callback_query')) {
             $this->processCallbackQuery($update);
-        } else if ($this->updateIsCommand($update)) {
-            $this->processCommand($update);
-        } else {
+            return;
+        }
+
+        if ($update->isType('message')) {
+            if ($this->botWasKickedFromChat($update) || $this->messageForMenu($update)) {
+                return;
+            }
+
+            if ($this->updateIsCommand($update)) {
+                $this->processCommand($update);
+                return;
+            }
+
             $this->processDialog($update);
         }
     }
