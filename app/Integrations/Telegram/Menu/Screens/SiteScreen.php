@@ -41,7 +41,7 @@ class SiteScreen extends Screen
     {
         $this->prepare();
 
-        $buttons = InlineKeyboard::make()
+        $keyboard = InlineKeyboard::make()
             ->button(InlineKeyboardButton::make('🧱 Deploy Now')->callbackData($this->generateCallbackData(self::NAME, self::ACTION_DEPLOY)))
             ->row()
             ->button(InlineKeyboardButton::make('➕ Add Notification Webhook')->callbackData($this->generateCallbackData(self::NAME, self::ACTION_ADD_WEBHOOK)));
@@ -53,15 +53,15 @@ class SiteScreen extends Screen
                 continue;
             }
 
-            $buttons->row()->button($this->button($webhook));
+            $keyboard->row()->button($this->button($webhook));
         }
 
-        $buttons->row()->button($this->backButton());
+        $keyboard->row()->button($this->backButton());
 
         $this->updateMenu(
             "*{$this->menu->token->name}*\n*Server*: {$this->menu->server->formatted_name}\n*Site*: {$this->menu->site->name}\n\n" .
             "What do you want to do with the site? You can also set deployment notifications to your chats.",
-            $buttons
+            $keyboard
         );
     }
 

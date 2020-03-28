@@ -86,6 +86,32 @@ class OutboundMessage implements Arrayable
     }
 
     /**
+     * Adds a reply keyboard to the message.
+     *
+     * @param ReplyKeyboard $keyboard
+     *
+     * @return $this
+     */
+    public function withReplyKeyboard(ReplyKeyboard $keyboard): self
+    {
+        $this->params['reply_markup'] = json_encode($keyboard->toArray());
+
+        return $this;
+    }
+
+    /**
+     * Removes a reply keyboard.
+     *
+     * @return $this
+     */
+    public function removeReplyKeyboard(): self
+    {
+        $this->params['reply_markup'] = json_encode(['remove_keyboard' => true]);
+
+        return $this;
+    }
+
+    /**
      * Adds inline keyboard to the message.
      *
      * @param InlineKeyboard $keyboard

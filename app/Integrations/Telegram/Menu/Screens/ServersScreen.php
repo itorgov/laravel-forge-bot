@@ -39,15 +39,15 @@ class ServersScreen extends Screen
         $this->prepare();
 
         $servers = LaravelForge::setToken($this->menu->token)->servers();
-        $buttons = InlineKeyboard::make();
+        $keyboard = InlineKeyboard::make();
 
         foreach ($servers as $server) {
-            $buttons = $buttons->row()->button($this->button($server));
+            $keyboard->row()->button($this->button($server));
         }
 
-        $buttons = $buttons->row()->button($this->backButton());
+        $keyboard = $keyboard->row()->button($this->backButton());
 
-        $this->updateMenu("*{$this->menu->token->name}*\n\nChoose your server:", $buttons);
+        $this->updateMenu("*{$this->menu->token->name}*\n\nChoose your server:", $keyboard);
     }
 
     /**

@@ -44,7 +44,7 @@ class ServerScreen extends Screen
     {
         $this->prepare();
 
-        $buttons = InlineKeyboard::make()
+        $keyboard = InlineKeyboard::make()
             ->button(InlineKeyboardButton::make('Reboot Server')->callbackData($this->generateCallbackData(self::NAME, self::ACTION_REBOOT)))
             ->row()
             ->button(InlineKeyboardButton::make('Reboot MySQL')->callbackData($this->generateCallbackData(self::NAME, self::ACTION_REBOOT_MYSQL)))
@@ -56,15 +56,15 @@ class ServerScreen extends Screen
         $sites = LaravelForge::setToken($this->menu->token)->sites($this->menu->server->id);
 
         foreach ($sites as $site) {
-            $buttons->row()->button($this->button($site));
+            $keyboard->row()->button($this->button($site));
         }
 
-        $buttons->row()->button($this->backButton());
+        $keyboard->row()->button($this->backButton());
 
         $this->updateMenu(
             "*{$this->menu->token->name}*\n*Server*: {$this->menu->server->formatted_name}\n\n" .
             "What do you want to do with the server? If you want manage server's sites just select needed one.",
-            $buttons
+            $keyboard
         );
     }
 

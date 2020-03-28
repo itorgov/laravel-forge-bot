@@ -2,19 +2,19 @@
 
 namespace App\Integrations\Telegram\Commands\Irazasyed;
 
-use App\Integrations\Telegram\Dialogs\AddTokenDialog;
+use App\Integrations\Telegram\Dialogs\DeleteTokenDialog;
 
-class AddTokenCommand extends Command
+class DeleteTokenCommand extends Command
 {
     /**
      * @var string Command name.
      */
-    protected $name = "addtoken";
+    protected $name = "deletetoken";
 
     /**
      * @var string Command description.
      */
-    protected $description = "Adds a Laravel Forge API token for managing your servers.";
+    protected $description = "Deletes a Laravel Forge API token.";
 
     /**
      * Handle the command.
@@ -23,6 +23,6 @@ class AddTokenCommand extends Command
      */
     public function handle($arguments)
     {
-        AddTokenDialog::start();
+        DeleteTokenDialog::start();
     }
 }

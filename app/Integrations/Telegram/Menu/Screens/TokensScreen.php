@@ -55,13 +55,13 @@ class TokensScreen extends Screen
             return;
         }
 
-        $buttons = InlineKeyboard::make();
+        $keyboard = InlineKeyboard::make();
 
         foreach ($tokens as $token) {
-            $buttons = $buttons->row()->button($this->button($token));
+            $keyboard->row()->button($this->button($token));
         }
 
-        $this->updateMenu('Choose your token:', $buttons);
+        $this->updateMenu('Choose your token:', $keyboard);
     }
 
     /**

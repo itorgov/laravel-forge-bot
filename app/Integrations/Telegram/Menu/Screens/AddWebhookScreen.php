@@ -39,17 +39,17 @@ class AddWebhookScreen extends Screen
     {
         $this->prepare();
 
-        $buttons = InlineKeyboard::make()
+        $keyboard = InlineKeyboard::make()
             ->button(InlineKeyboardButton::make('To this chat')->callbackData($this->generateCallbackData(self::NAME, self::ACTION_THIS)))
             ->row()
             ->button(InlineKeyboardButton::make('To another chat')->callbackData($this->generateCallbackData(self::NAME, self::ACTION_ANOTHER)));
 
-        $buttons->row()->button($this->backButton());
+        $keyboard->row()->button($this->backButton());
 
         $this->updateMenu(
             "*{$this->menu->token->name}*\n*Server*: {$this->menu->server->formatted_name}\n*Site*: {$this->menu->site->name}\n\n" .
             "To which chat do you want to get deployment notifications?",
-            $buttons
+            $keyboard
         );
     }
 

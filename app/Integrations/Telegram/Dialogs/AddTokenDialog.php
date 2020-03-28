@@ -18,7 +18,7 @@ class AddTokenDialog extends BaseDialog implements DialogContract
     /**
      * @var Dialog $dialog
      */
-    private Dialog $dialog;
+    protected Dialog $dialog;
 
     /**
      * AddTokenDialog constructor.
@@ -41,7 +41,6 @@ class AddTokenDialog extends BaseDialog implements DialogContract
             'name' => self::class,
             'data' => [
                 'token' => false,
-                'additional_data' => $additionalData,
             ],
         ]);
 

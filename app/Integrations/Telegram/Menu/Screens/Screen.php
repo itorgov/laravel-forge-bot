@@ -39,15 +39,15 @@ abstract class Screen
      * Updates the menu message.
      *
      * @param string $text
-     * @param InlineKeyboard $buttons
+     * @param InlineKeyboard $keyboard
      *
      * @return void
      */
-    protected function updateMenu(string $text, InlineKeyboard $buttons): void
+    protected function updateMenu(string $text, InlineKeyboard $keyboard): void
     {
         OutboundMessage::make($this->menu->user, $text)
             ->parseMode(OutboundMessage::PARSE_MODE_MARKDOWN)
-            ->withInlineKeyboard($buttons)
+            ->withInlineKeyboard($keyboard)
             ->edit($this->menu->message_id);
     }
 

@@ -4,6 +4,7 @@ namespace App\Integrations\Telegram;
 
 use App\Contracts\TelegramBotContract;
 use App\Integrations\Telegram\Commands\Irazasyed\AddTokenCommand;
+use App\Integrations\Telegram\Commands\Irazasyed\DeleteTokenCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\HelpCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\MenuCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\ShowChatIdCommand;
@@ -51,6 +52,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
             ShowChatIdCommand::class,
             AddTokenCommand::class,
             MenuCommand::class,
+            DeleteTokenCommand::class,
         ]);
     }
 
@@ -156,8 +158,12 @@ class IrazasyedTelegramBot implements TelegramBotContract
      */
     private function processCallbackQuery(Update $update): void
     {
-        MenuManager::forMessageId($update->getCallbackQuery()->getMessage()->getMessageId())
-            ->handleCallback($update->getCallbackQuery()->getId(), $update->getCallbackQuery()->getData());
+        $messageId = $update->getCallbackQuery()->getMessage()->getMessageId();
+
+        if (Auth::user()->menus()->whereMessageId($messageId)->exists()) {
+            MenuManager::forMessageId($messageId)
+                ->handleCallback($update->getCallbackQuery()->getId(), $update->getCallbackQuery()->getData());
+        }
     }
 
     /**

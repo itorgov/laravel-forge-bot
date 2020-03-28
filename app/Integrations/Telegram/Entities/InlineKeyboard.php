@@ -2,53 +2,8 @@
 
 namespace App\Integrations\Telegram\Entities;
 
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\Arr;
-
-class InlineKeyboard implements Arrayable
+class InlineKeyboard extends Keyboard
 {
-    /**
-     * @var array $rows
-     */
-    private array $rows = [];
-
-    /**
-     * InlineKeyboard constructor.
-     *
-     * @return void
-     */
-    private function __construct()
-    {
-        $this->row();
-    }
-
-    /**
-     * Makes a new instance of this class.
-     *
-     * @return static
-     */
-    public static function make(): self
-    {
-        return new self();
-    }
-
-    /**
-     * Adds a new row of buttons to the keyboard.
-     *
-     * @return $this
-     */
-    public function row(): self
-    {
-        $lastRow = Arr::last($this->rows);
-
-        // Prevent to add empty rows.
-        if ($lastRow === null || !empty($lastRow)) {
-            $this->rows[] = [];
-        }
-
-        return $this;
-    }
-
     /**
      * Adds a button to the last row of the keyboard.
      *
@@ -58,12 +13,7 @@ class InlineKeyboard implements Arrayable
      */
     public function button(InlineKeyboardButton $button): self
     {
-        $lastRow = array_pop($this->rows);
-
-        $lastRow[] = $button->toArray();
-        $this->rows[] = $lastRow;
-
-        return $this;
+        return parent::addButtonToRow($button);
     }
 
     /**
