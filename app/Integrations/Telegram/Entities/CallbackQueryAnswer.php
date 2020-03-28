@@ -9,7 +9,7 @@ use Illuminate\Contracts\Support\Arrayable;
 class CallbackQueryAnswer implements Arrayable
 {
     /**
-     * @var array $params
+     * @var array
      */
     private array $params = [];
 

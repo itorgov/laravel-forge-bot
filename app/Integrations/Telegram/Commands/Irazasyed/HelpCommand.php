@@ -30,7 +30,7 @@ class HelpCommand extends Command
 
         $text = '';
         foreach ($commands as $name => $handler) {
-            $text .= sprintf('/%s - %s' . PHP_EOL, $name, $handler->getDescription());
+            $text .= sprintf('/%s - %s'.PHP_EOL, $name, $handler->getDescription());
         }
 
         $this->replyWithMessage([

@@ -7,8 +7,7 @@ use App\Token;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * Class LaravelForge
- * @package App\Facades
+ * Class LaravelForge.
  *
  * @method static LaravelForgeContract setToken(Token $token)
  */

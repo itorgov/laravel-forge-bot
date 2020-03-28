@@ -7,12 +7,12 @@ class ShowChatIdCommand extends Command
     /**
      * @var string Command name.
      */
-    protected $name = "showchatid";
+    protected $name = 'showchatid';
 
     /**
      * @var string Command description.
      */
-    protected $description = "Shows a chat ID.";
+    protected $description = 'Shows a chat ID.';
 
     /**
      * Handle the command.

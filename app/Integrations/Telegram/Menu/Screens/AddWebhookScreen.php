@@ -14,7 +14,7 @@ class AddWebhookScreen extends Screen
     public const ACTION_ANOTHER = 'another';
 
     /**
-     * @var Menu $menu
+     * @var Menu
      */
     protected Menu $menu;
 
@@ -47,8 +47,8 @@ class AddWebhookScreen extends Screen
         $keyboard->row()->button($this->backButton());
 
         $this->updateMenu(
-            "*{$this->menu->token->name}*\n*Server*: {$this->menu->server->formatted_name}\n*Site*: {$this->menu->site->name}\n\n" .
-            "To which chat do you want to get deployment notifications?",
+            "*{$this->menu->token->name}*\n*Server*: {$this->menu->server->formatted_name}\n*Site*: {$this->menu->site->name}\n\n".
+            'To which chat do you want to get deployment notifications?',
             $keyboard
         );
     }

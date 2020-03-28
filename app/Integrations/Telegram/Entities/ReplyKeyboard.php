@@ -5,7 +5,7 @@ namespace App\Integrations\Telegram\Entities;
 class ReplyKeyboard extends Keyboard
 {
     /**
-     * @var array $params
+     * @var array
      */
     private array $params = [];
 
@@ -50,7 +50,7 @@ class ReplyKeyboard extends Keyboard
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function toArray()
     {

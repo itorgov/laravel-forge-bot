@@ -17,7 +17,7 @@ class InlineKeyboard extends Keyboard
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function toArray()
     {

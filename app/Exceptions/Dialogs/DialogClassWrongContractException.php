@@ -8,7 +8,7 @@ use Throwable;
 
 class DialogClassWrongContractException extends RuntimeException
 {
-    public function __construct($className = "", $code = 0, Throwable $previous = null)
+    public function __construct($className = '', $code = 0, Throwable $previous = null)
     {
         $message = vsprintf('Dialog class "%s" should implements "%s"', [
             $className,

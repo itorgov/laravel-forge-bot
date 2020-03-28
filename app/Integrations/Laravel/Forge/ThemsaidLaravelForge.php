@@ -15,7 +15,7 @@ use Themsaid\Forge\Resources\Webhook;
 class ThemsaidLaravelForge implements LaravelForgeContract
 {
     /**
-     * @var Forge $forge
+     * @var Forge
      */
     private Forge $forge;
 
@@ -30,7 +30,7 @@ class ThemsaidLaravelForge implements LaravelForgeContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function setToken(Token $token): self
     {
@@ -40,7 +40,7 @@ class ThemsaidLaravelForge implements LaravelForgeContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function user(): string
     {
@@ -54,7 +54,7 @@ class ThemsaidLaravelForge implements LaravelForgeContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function servers(): Collection
     {
@@ -68,7 +68,7 @@ class ThemsaidLaravelForge implements LaravelForgeContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function server(int $serverId): Entities\Server
     {
@@ -82,7 +82,7 @@ class ThemsaidLaravelForge implements LaravelForgeContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function rebootServer(int $serverId): void
     {
@@ -94,7 +94,7 @@ class ThemsaidLaravelForge implements LaravelForgeContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function rebootMysql(int $serverId): void
     {
@@ -106,7 +106,7 @@ class ThemsaidLaravelForge implements LaravelForgeContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function rebootPostgresql(int $serverId): void
     {
@@ -118,7 +118,7 @@ class ThemsaidLaravelForge implements LaravelForgeContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function rebootPhp(int $serverId): void
     {
@@ -130,7 +130,7 @@ class ThemsaidLaravelForge implements LaravelForgeContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function rebootNginx(int $serverId): void
     {
@@ -142,7 +142,7 @@ class ThemsaidLaravelForge implements LaravelForgeContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function sites(int $serverId): Collection
     {
@@ -156,7 +156,7 @@ class ThemsaidLaravelForge implements LaravelForgeContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function site(int $serverId, int $siteId): Entities\Site
     {
@@ -170,7 +170,7 @@ class ThemsaidLaravelForge implements LaravelForgeContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function deploySite(int $serverId, int $siteId): void
     {
@@ -182,7 +182,7 @@ class ThemsaidLaravelForge implements LaravelForgeContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function webhooks(int $serverId, int $siteId): Collection
     {
@@ -196,7 +196,7 @@ class ThemsaidLaravelForge implements LaravelForgeContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function createWebhook(int $serverId, int $siteId, string $url): void
     {
@@ -210,7 +210,7 @@ class ThemsaidLaravelForge implements LaravelForgeContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function deleteWebhook(int $serverId, int $siteId, int $webhookId): void
     {

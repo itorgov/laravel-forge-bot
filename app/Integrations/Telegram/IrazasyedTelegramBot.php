@@ -27,7 +27,7 @@ use Telegram\Bot\Objects\Update;
 class IrazasyedTelegramBot implements TelegramBotContract
 {
     /**
-     * @var Api $telegram
+     * @var Api
      */
     private Api $telegram;
 
@@ -57,7 +57,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function setWebhook(string $hookUrl): WebhookResponse
     {
@@ -73,7 +73,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getWebhookInfo(): WebhookInfoResponse
     {
@@ -89,7 +89,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function removeWebhook(): WebhookResponse
     {
@@ -103,7 +103,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function authenticate(Request $request): void
     {
@@ -138,7 +138,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
      */
     private function processDialog(Update $update): void
     {
-        if (!$update->isType('message')) {
+        if (! $update->isType('message')) {
             return;
         }
 
@@ -190,7 +190,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
      */
     private function updateIsCommand(Update $update): bool
     {
-        if (!$update->isType('message')) {
+        if (! $update->isType('message')) {
             return false;
         }
 
@@ -254,7 +254,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function handle(Request $request): void
     {
@@ -263,6 +263,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
 
         if ($update->isType('callback_query')) {
             $this->processCallbackQuery($update);
+
             return;
         }
 
@@ -273,6 +274,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
 
             if ($this->updateIsCommand($update)) {
                 $this->processCommand($update);
+
                 return;
             }
 
@@ -281,7 +283,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function sendMessage(OutboundMessage $message): void
     {
@@ -293,7 +295,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function sendChatAction(ChatAction $chatAction): void
     {
@@ -305,7 +307,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function editMessage(OutboundMessage $message): void
     {
@@ -317,7 +319,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function answerCallbackQuery(CallbackQueryAnswer $answer): void
     {

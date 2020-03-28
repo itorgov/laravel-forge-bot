@@ -24,7 +24,7 @@ class Webhook
      */
     public function isAlien(): bool
     {
-        return !Str::startsWith($this->url, config('app.url'));
+        return ! Str::startsWith($this->url, config('app.url'));
     }
 
     /**

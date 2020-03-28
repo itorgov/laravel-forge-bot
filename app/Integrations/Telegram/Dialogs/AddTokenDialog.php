@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 class AddTokenDialog extends BaseDialog implements DialogContract
 {
     /**
-     * @var Dialog $dialog
+     * @var Dialog
      */
     protected Dialog $dialog;
 
@@ -33,7 +33,7 @@ class AddTokenDialog extends BaseDialog implements DialogContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public static function start(array $additionalData = []): self
     {
@@ -48,7 +48,7 @@ class AddTokenDialog extends BaseDialog implements DialogContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public static function next(Dialog $dialog, string $message): self
     {
@@ -68,7 +68,7 @@ class AddTokenDialog extends BaseDialog implements DialogContract
      */
     private function nextStep(?string $message = null): self
     {
-        if (!$this->dialog->data['token']) {
+        if (! $this->dialog->data['token']) {
             if ($message === null) {
                 $this->askForToken();
             } else {
@@ -89,10 +89,10 @@ class AddTokenDialog extends BaseDialog implements DialogContract
     {
         $hasTokens = $this->dialog->user->tokens()->exists();
 
-        if (!$hasTokens) {
-            $text = 'Let\'s add your first Laravel Forge API token. ' .
-                'Go to [API](https://forge.laravel.com/user/profile#/api) section in your ' .
-                'Laravel Forge account settings and generate a new token. ' .
+        if (! $hasTokens) {
+            $text = 'Let\'s add your first Laravel Forge API token. '.
+                'Go to [API](https://forge.laravel.com/user/profile#/api) section in your '.
+                'Laravel Forge account settings and generate a new token. '.
                 'Then just send it me.';
         } else {
             $text = 'Send me your Laravel Forge API token.';
@@ -135,7 +135,7 @@ class AddTokenDialog extends BaseDialog implements DialogContract
             return false;
         }
 
-        return !empty($user);
+        return ! empty($user);
     }
 
     /**

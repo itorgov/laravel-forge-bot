@@ -18,12 +18,12 @@ use Illuminate\Support\Str;
 class MenuManager
 {
     /**
-     * @var Menu $menu
+     * @var Menu
      */
     private Menu $menu;
 
     /**
-     * @var ScreenManager $screens
+     * @var ScreenManager
      */
     private ScreenManager $screens;
 

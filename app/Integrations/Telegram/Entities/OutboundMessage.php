@@ -12,7 +12,7 @@ class OutboundMessage implements Arrayable
     public const PARSE_MODE_HTML = 'HTML';
 
     /**
-     * @var array $params
+     * @var array
      */
     private array $params = [];
 

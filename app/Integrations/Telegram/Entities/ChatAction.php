@@ -16,7 +16,7 @@ class ChatAction implements Arrayable
     public const TYPING = 'typing';
 
     /**
-     * @var array $params
+     * @var array
      */
     private array $params = [];
 

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 class AskForChatIdDialog extends BaseDialog implements DialogContract
 {
     /**
-     * @var Dialog $dialog
+     * @var Dialog
      */
     protected Dialog $dialog;
 
@@ -30,7 +30,7 @@ class AskForChatIdDialog extends BaseDialog implements DialogContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public static function start(array $additionalData = []): self
     {
@@ -46,7 +46,7 @@ class AskForChatIdDialog extends BaseDialog implements DialogContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public static function next(Dialog $dialog, string $message): self
     {
@@ -86,8 +86,8 @@ class AskForChatIdDialog extends BaseDialog implements DialogContract
     {
         OutboundMessage::make(
             $this->dialog->user,
-            'Send me the id of that chat. First of all you have to add me to that chat. ' .
-            'Then you can use my command /showchatid@' . config('services.telegram.bot.username') . ' to get an id.'
+            'Send me the id of that chat. First of all you have to add me to that chat. '.
+            'Then you can use my command /showchatid@'.config('services.telegram.bot.username').' to get an id.'
         )->send();
     }
 

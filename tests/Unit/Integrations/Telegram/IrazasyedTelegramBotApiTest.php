@@ -8,7 +8,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
-class IrazasyedTelegramBotTest extends TestCase
+class IrazasyedTelegramBotApiTest extends TestCase
 {
     private function rawRequest(string $methodName, $data = []): Response
     {
