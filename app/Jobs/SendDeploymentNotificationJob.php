@@ -17,12 +17,12 @@ class SendDeploymentNotificationJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * @var User $user
+     * @var User
      */
     private User $user;
 
     /**
-     * @var array $deploymentInfo
+     * @var array
      */
     private array $deploymentInfo;
 

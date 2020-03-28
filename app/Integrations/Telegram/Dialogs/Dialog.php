@@ -8,9 +8,6 @@ abstract class Dialog
 {
     protected DialogModel $dialog;
 
-    /**
-     * @inheritDoc
-     */
     public function isFinished(): bool
     {
         return $this->dialog->finished();

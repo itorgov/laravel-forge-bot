@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 class DeleteTokenDialog extends BaseDialog implements DialogContract
 {
     /**
-     * @var Dialog $dialog
+     * @var Dialog
      */
     protected Dialog $dialog;
 
@@ -32,7 +32,7 @@ class DeleteTokenDialog extends BaseDialog implements DialogContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public static function start(array $additionalData = []): self
     {
@@ -47,7 +47,7 @@ class DeleteTokenDialog extends BaseDialog implements DialogContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public static function next(Dialog $dialog, string $message): self
     {
@@ -92,6 +92,7 @@ class DeleteTokenDialog extends BaseDialog implements DialogContract
 
         if ($tokens->isEmpty()) {
             OutboundMessage::make($this->dialog->user, 'You don\'t have any tokens yet.')->send();
+
             return;
         }
 
@@ -103,7 +104,7 @@ class DeleteTokenDialog extends BaseDialog implements DialogContract
 
         OutboundMessage::make(
             $this->dialog->user,
-            'Send me name of a Laravel Forge API token which you want to delete. ' .
+            'Send me name of a Laravel Forge API token which you want to delete. '.
             'I sent you a special keyboard for convenience.'
         )->withReplyKeyboard($keyboard)->send();
     }
@@ -178,7 +179,7 @@ class DeleteTokenDialog extends BaseDialog implements DialogContract
     {
         OutboundMessage::make(
             $this->dialog->user,
-            "Your token *{$this->dialog->data['token_name']}* succesfully deleted. " .
+            "Your token *{$this->dialog->data['token_name']}* succesfully deleted. ".
             "Note that previous menus with this token won't work. Please, create a new menu using /menu command."
         )->removeReplyKeyboard()->parseMode(OutboundMessage::PARSE_MODE_MARKDOWN)->send();
     }

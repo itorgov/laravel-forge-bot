@@ -59,7 +59,7 @@ class Dialog extends Model
      *
      * @return Dialog
      */
-    public function finish(): Dialog
+    public function finish(): self
     {
         $this->update([
             'finished_at' => Carbon::now(),
@@ -87,13 +87,13 @@ class Dialog extends Model
      */
     private function validateName(): void
     {
-        if (!class_exists($this->name)) {
+        if (! class_exists($this->name)) {
             throw new DialogClassNotFoundException($this->name);
         }
 
         $interfaces = class_implements($this->name);
 
-        if (empty($interfaces) || !in_array(DialogContract::class, $interfaces)) {
+        if (empty($interfaces) || ! in_array(DialogContract::class, $interfaces)) {
             throw new DialogClassWrongContractException($this->name);
         }
     }

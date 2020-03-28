@@ -7,7 +7,7 @@ use Illuminate\Contracts\Support\Arrayable;
 class KeyboardButton implements Arrayable
 {
     /**
-     * @var array $params
+     * @var array
      */
     protected array $params = [];
 
@@ -36,7 +36,7 @@ class KeyboardButton implements Arrayable
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function toArray()
     {

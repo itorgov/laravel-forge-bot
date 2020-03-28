@@ -10,19 +10,13 @@ use App\Menu;
 abstract class Screen
 {
     /**
-     * @var Menu $menu
+     * @var Menu
      */
     protected Menu $menu;
 
-    /**
-     * @inheritDoc
-     */
-    abstract function __construct(Menu $menu);
+    abstract public function __construct(Menu $menu);
 
-    /**
-     * @inheritDoc
-     */
-    abstract function show(): void;
+    abstract public function show(): void;
 
     /**
      * Makes a "Back" button for the current screen.

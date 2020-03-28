@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 abstract class Keyboard implements Arrayable
 {
     /**
-     * @var array $rows
+     * @var array
      */
     protected array $rows = [];
 
@@ -42,7 +42,7 @@ abstract class Keyboard implements Arrayable
         $lastRow = Arr::last($this->rows);
 
         // Prevent to add empty rows.
-        if ($lastRow === null || !empty($lastRow)) {
+        if ($lastRow === null || ! empty($lastRow)) {
             $this->rows[] = [];
         }
 

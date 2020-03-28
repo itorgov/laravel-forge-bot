@@ -14,7 +14,7 @@ use App\Menu;
 class ScreenManager
 {
     /**
-     * @var Menu $menu
+     * @var Menu
      */
     protected Menu $menu;
 

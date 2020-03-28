@@ -5,8 +5,7 @@ namespace App\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * Class Hashids
- * @package App\Facades
+ * Class Hashids.
  *
  * @method static string encode(...$numbers) Encode parameters to generate a hash.
  * @method static array decode(string $hash) Decode a hash to the original parameter values.

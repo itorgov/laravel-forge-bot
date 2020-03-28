@@ -9,12 +9,12 @@ class DeleteTokenCommand extends Command
     /**
      * @var string Command name.
      */
-    protected $name = "deletetoken";
+    protected $name = 'deletetoken';
 
     /**
      * @var string Command description.
      */
-    protected $description = "Deletes a Laravel Forge API token.";
+    protected $description = 'Deletes a Laravel Forge API token.';
 
     /**
      * Handle the command.

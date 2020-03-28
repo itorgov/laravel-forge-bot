@@ -7,12 +7,12 @@ class StartCommand extends Command
     /**
      * @var string Command name.
      */
-    protected $name = "start";
+    protected $name = 'start';
 
     /**
      * @var string Command description.
      */
-    protected $description = "Start command to get you started.";
+    protected $description = 'Start command to get you started.';
 
     /**
      * Handle the command.

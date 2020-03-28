@@ -5,8 +5,7 @@ namespace App\Integrations\Telegram\Entities;
 use Illuminate\Support\Fluent;
 
 /**
- * Class WebhookInfo
- * @package App\Integrations\Telegram\Entities
+ * Class WebhookInfo.
  *
  * @property string|null $url Webhook URL, may be empty if webhook is not set up
  * @property bool|null $has_custom_certificate True, if a custom certificate was provided for webhook certificate checks

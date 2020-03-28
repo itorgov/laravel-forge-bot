@@ -16,7 +16,7 @@ class SiteScreen extends Screen
     public const ACTION_ADD_WEBHOOK = 'add-webhook';
 
     /**
-     * @var Menu $menu
+     * @var Menu
      */
     protected Menu $menu;
 
@@ -59,8 +59,8 @@ class SiteScreen extends Screen
         $keyboard->row()->button($this->backButton());
 
         $this->updateMenu(
-            "*{$this->menu->token->name}*\n*Server*: {$this->menu->server->formatted_name}\n*Site*: {$this->menu->site->name}\n\n" .
-            "What do you want to do with the site? You can also set deployment notifications to your chats.",
+            "*{$this->menu->token->name}*\n*Server*: {$this->menu->server->formatted_name}\n*Site*: {$this->menu->site->name}\n\n".
+            'What do you want to do with the site? You can also set deployment notifications to your chats.',
             $keyboard
         );
     }

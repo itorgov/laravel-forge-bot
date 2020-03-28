@@ -13,7 +13,7 @@ class ServersScreen extends Screen
     public const NAME = 'servers';
 
     /**
-     * @var Menu $menu
+     * @var Menu
      */
     protected Menu $menu;
 

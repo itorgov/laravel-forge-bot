@@ -5,8 +5,7 @@ namespace App\Integrations\Telegram\Entities;
 use Illuminate\Support\Fluent;
 
 /**
- * Class WebhookInfoResponse
- * @package App\Integrations\Telegram\Entities
+ * Class WebhookInfoResponse.
  *
  * @property bool|null $ok
  * @property WebhookInfo|null $result

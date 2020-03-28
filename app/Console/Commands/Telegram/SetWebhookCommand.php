@@ -31,7 +31,7 @@ class SetWebhookCommand extends Command
     {
         $url = route('integrations.telegram.webhook');
 
-        if (!$this->confirmToProceed($url)) {
+        if (! $this->confirmToProceed($url)) {
             return 0;
         }
 
@@ -55,7 +55,7 @@ class SetWebhookCommand extends Command
 
         $currentWebhookUrl = TelegramBot::getWebhookInfo()->result->url;
 
-        if (!empty($currentWebhookUrl)) {
+        if (! empty($currentWebhookUrl)) {
             $this->alert("There is a current webhook URL: {$currentWebhookUrl}");
 
             return $this->confirm("Do you want to replace it to {$url}?");

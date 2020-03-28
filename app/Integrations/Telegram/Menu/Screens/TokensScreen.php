@@ -14,7 +14,7 @@ class TokensScreen extends Screen
     public const NAME = 'tokens';
 
     /**
-     * @var Menu $menu
+     * @var Menu
      */
     protected Menu $menu;
 

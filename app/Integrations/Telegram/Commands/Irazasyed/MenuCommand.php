@@ -10,12 +10,12 @@ class MenuCommand extends Command
     /**
      * @var string Command name.
      */
-    protected $name = "menu";
+    protected $name = 'menu';
 
     /**
      * @var string Command description.
      */
-    protected $description = "Shows a menu for managing your Laravel Forge servers.";
+    protected $description = 'Shows a menu for managing your Laravel Forge servers.';
 
     /**
      * Handle the command.

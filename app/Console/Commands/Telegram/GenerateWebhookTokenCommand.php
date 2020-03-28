@@ -42,7 +42,7 @@ class GenerateWebhookTokenCommand extends Command
         }
 
         // Next, we will replace the telegram webhook token in the environment file.
-        if (!$this->setTokenInEnvironmentFile($token)) {
+        if (! $this->setTokenInEnvironmentFile($token)) {
             return 0;
         }
 
@@ -72,7 +72,7 @@ class GenerateWebhookTokenCommand extends Command
     {
         $currentToken = env('TELEGRAM_BOT_WEBHOOK_TOKEN');
 
-        if (strlen($currentToken) !== 0 && (!$this->confirmToProceed())) {
+        if (strlen($currentToken) !== 0 && (! $this->confirmToProceed())) {
             return false;
         }
 
@@ -92,7 +92,7 @@ class GenerateWebhookTokenCommand extends Command
     {
         file_put_contents($this->environmentFilePath(), preg_replace(
             $this->tokenReplacementPattern(),
-            'TELEGRAM_BOT_WEBHOOK_TOKEN=' . $token,
+            'TELEGRAM_BOT_WEBHOOK_TOKEN='.$token,
             file_get_contents($this->environmentFilePath())
         ));
     }
@@ -104,7 +104,7 @@ class GenerateWebhookTokenCommand extends Command
      */
     protected function tokenReplacementPattern(): string
     {
-        $escaped = preg_quote('=' . env('TELEGRAM_BOT_WEBHOOK_TOKEN'), '/');
+        $escaped = preg_quote('='.env('TELEGRAM_BOT_WEBHOOK_TOKEN'), '/');
 
         return "/^TELEGRAM_BOT_WEBHOOK_TOKEN{$escaped}/m";
     }
