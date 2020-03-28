@@ -19,12 +19,12 @@ class SendDeploymentNotificationJob implements ShouldQueue
     /**
      * @var User
      */
-    private User $user;
+    public User $user;
 
     /**
      * @var array
      */
-    private array $deploymentInfo;
+    public array $deploymentInfo;
 
     /**
      * Create a new job instance.
