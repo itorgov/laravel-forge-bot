@@ -8,6 +8,9 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
+/**
+ * @group integration
+ */
 class IrazasyedTelegramBotTest extends TestCase
 {
     private function rawRequest(string $methodName, $data = []): Response
