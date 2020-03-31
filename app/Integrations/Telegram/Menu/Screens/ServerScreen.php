@@ -63,7 +63,7 @@ class ServerScreen extends Screen
 
         $this->updateMenu(
             "*{$this->menu->token->name}*\n*Server*: {$this->menu->server->formatted_name}\n\n".
-            "What do you want to do with the server? If you want manage server's sites just select needed one.",
+            "What do you want to do with the server? If you want to manage server's sites just select the needed one.",
             $keyboard
         );
     }

@@ -86,8 +86,8 @@ class AskForChatIdDialog extends BaseDialog implements DialogContract
     {
         OutboundMessage::make(
             $this->dialog->user,
-            'Send me the id of that chat. First of all you have to add me to that chat. '.
-            'Then you can use my command /showchatid@'.config('services.telegram.bot.username').' to get an id.'
+            'Send me the id of that chat. First of all, you have to add me to that chat. '.
+            'Then you can use the /showchatid@'.config('services.telegram.bot.username').' command to get an id.'
         )->send();
     }
 

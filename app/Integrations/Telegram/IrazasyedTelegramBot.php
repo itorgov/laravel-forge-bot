@@ -5,6 +5,7 @@ namespace App\Integrations\Telegram;
 use App\Contracts\TelegramBotContract;
 use App\Integrations\Telegram\Commands\Irazasyed\AddTokenCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\DeleteTokenCommand;
+use App\Integrations\Telegram\Commands\Irazasyed\DonateCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\HelpCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\MenuCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\ShowChatIdCommand;
@@ -51,9 +52,15 @@ class IrazasyedTelegramBot implements TelegramBotContract
             HelpCommand::class,
             ShowChatIdCommand::class,
             AddTokenCommand::class,
-            MenuCommand::class,
             DeleteTokenCommand::class,
+            MenuCommand::class,
         ]);
+
+        if (config('services.telegram.bot.donate_command')) {
+            $this->telegram->addCommands([
+                DonateCommand::class,
+            ]);
+        }
     }
 
     /**

@@ -91,9 +91,9 @@ class AddTokenDialog extends BaseDialog implements DialogContract
 
         if (! $hasTokens) {
             $text = 'Let\'s add your first Laravel Forge API token. '.
-                'Go to [API](https://forge.laravel.com/user/profile#/api) section in your '.
+                'Go to the [API](https://forge.laravel.com/user/profile#/api) section in your '.
                 'Laravel Forge account settings and generate a new token. '.
-                'Then just send it me.';
+                'Then just send it to me.';
         } else {
             $text = 'Send me your Laravel Forge API token.';
         }
@@ -167,7 +167,7 @@ class AddTokenDialog extends BaseDialog implements DialogContract
     {
         OutboundMessage::make(
             $this->dialog->user,
-            'You sent an invalid token. I can\'t use it for connectiong to your Laravel Forge account. Please, send me a valid token.'
+            'You sent an invalid token. I can\'t use it for connecting to your Laravel Forge account. Please, send me a valid token.'
         )->send();
     }
 
@@ -178,7 +178,7 @@ class AddTokenDialog extends BaseDialog implements DialogContract
     {
         OutboundMessage::make(
             $this->dialog->user,
-            'You succesfully added your Laravel Forge API token. You can add another one by using /addtoken command. Now you can use /menu command.'
+            'You successfully added your Laravel Forge API token. You can add another one by using the /addtoken command. Now you can use the /menu command.'
         )->send();
     }
 }

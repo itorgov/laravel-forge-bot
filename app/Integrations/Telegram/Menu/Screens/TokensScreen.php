@@ -42,7 +42,7 @@ class TokensScreen extends Screen
         $tokens = $this->menu->user->tokens;
 
         if ($tokens->isEmpty()) {
-            OutboundMessage::make($this->menu->user, 'You haven\'t any Laravel Forge API tokens yet. Please add one by using /addtoken command.')->send();
+            OutboundMessage::make($this->menu->user, 'You haven\'t any Laravel Forge API tokens yet. Please add one by using the /addtoken command.')->send();
 
             try {
                 $this->menu->delete();

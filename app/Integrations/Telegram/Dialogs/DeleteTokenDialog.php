@@ -104,7 +104,7 @@ class DeleteTokenDialog extends BaseDialog implements DialogContract
 
         OutboundMessage::make(
             $this->dialog->user,
-            'Send me name of a Laravel Forge API token which you want to delete. '.
+            'Send me the name of a Laravel Forge API token which you want to delete. '.
             'I sent you a special keyboard for convenience.'
         )->withReplyKeyboard($keyboard)->send();
     }
@@ -179,8 +179,8 @@ class DeleteTokenDialog extends BaseDialog implements DialogContract
     {
         OutboundMessage::make(
             $this->dialog->user,
-            "Your token *{$this->dialog->data['token_name']}* succesfully deleted. ".
-            "Note that previous menus with this token won't work. Please, create a new menu using /menu command."
+            "Your token *{$this->dialog->data['token_name']}* successfully deleted. ".
+            "Note that previous menus with this token won't work. Please, create a new menu using the /menu command."
         )->removeReplyKeyboard()->parseMode(OutboundMessage::PARSE_MODE_MARKDOWN)->send();
     }
 }

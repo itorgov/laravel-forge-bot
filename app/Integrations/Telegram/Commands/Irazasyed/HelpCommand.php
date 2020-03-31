@@ -17,7 +17,7 @@ class HelpCommand extends Command
     /**
      * @var string Command description.
      */
-    protected $description = 'Help command, returns a list of commands.';
+    protected $description = 'Help command returns a list of commands.';
 
     /**
      * Handle the command.
@@ -28,7 +28,8 @@ class HelpCommand extends Command
     {
         $commands = $this->telegram->getCommands();
 
-        $text = '';
+        $text = "Here is a list of available commands:\n";
+
         foreach ($commands as $name => $handler) {
             $text .= sprintf('/%s - %s'.PHP_EOL, $name, $handler->getDescription());
         }

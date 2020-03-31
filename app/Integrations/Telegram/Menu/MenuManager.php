@@ -64,7 +64,7 @@ class MenuManager
     }
 
     /**
-     * Handles callback.
+     * Handles a callback.
      *
      * @param string $id
      * @param string $data
@@ -103,6 +103,13 @@ class MenuManager
         }
     }
 
+    /**
+     * Handles a text message.
+     *
+     * @param string $text
+     *
+     * @return void
+     */
     public function handleMessage(string $text): void
     {
         switch ($this->menu->waiting_message_for) {
