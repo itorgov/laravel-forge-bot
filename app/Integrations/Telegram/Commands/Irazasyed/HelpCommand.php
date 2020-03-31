@@ -2,6 +2,9 @@
 
 namespace App\Integrations\Telegram\Commands\Irazasyed;
 
+use App\Facades\TelegramBot;
+use App\Integrations\Telegram\Entities\BotCommand;
+
 class HelpCommand extends Command
 {
     /**
@@ -26,13 +29,12 @@ class HelpCommand extends Command
      */
     public function handle($arguments)
     {
-        $commands = $this->telegram->getCommands();
-
-        $text = "Here is a list of available commands:\n";
-
-        foreach ($commands as $name => $handler) {
-            $text .= sprintf('/%s - %s'.PHP_EOL, $name, $handler->getDescription());
-        }
+        $text = TelegramBot::listOfCommands()->reduce(function (string $text, BotCommand $botCommand) {
+            return $text.vsprintf("/%s - %s\n", [
+                    $botCommand->getName(),
+                    $botCommand->getDescription(),
+                ]);
+        }, "Here is a list of available commands:\n");
 
         $this->replyWithMessage([
             'text' => $text,

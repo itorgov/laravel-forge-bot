@@ -77,4 +77,27 @@ class IrazasyedTelegramBotTest extends TestCase
             $this->assertEquals('', $body['result']['url']);
         });
     }
+
+    /**
+     * @test
+     */
+    public function can_succsessfuly_set_commands()
+    {
+        $telegram = new IrazasyedTelegramBot(env('TELEGRAM_BOT_API_KEY'));
+        $this->rawRequest('setMyCommands', [
+            'commands' => '[]',
+        ]);
+        tap($this->rawRequest('getMyCommands')->json(), function ($response) {
+            $this->assertTrue($response['ok']);
+            $this->assertCount(0, $response['result']);
+        });
+
+        sleep(1); // To avoid 429 error;
+        $telegram->setMyCommands();
+
+        tap($this->rawRequest('getMyCommands')->json(), function ($response) use ($telegram) {
+            $this->assertTrue($response['ok']);
+            $this->assertEquals($telegram->listOfCommands()->toArray(), $response['result']);
+        });
+    }
 }

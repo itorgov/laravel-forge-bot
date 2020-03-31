@@ -2,6 +2,7 @@
 
 namespace App\Contracts;
 
+use App\Integrations\Telegram\Entities\BotCommand;
 use App\Integrations\Telegram\Entities\CallbackQueryAnswer;
 use App\Integrations\Telegram\Entities\ChatAction;
 use App\Integrations\Telegram\Entities\OutboundMessage;
@@ -9,6 +10,7 @@ use App\Integrations\Telegram\Entities\WebhookInfoResponse;
 use App\Integrations\Telegram\Entities\WebhookResponse;
 use App\Integrations\Telegram\Exceptions\TelegramBotException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 interface TelegramBotContract
 {
@@ -94,4 +96,18 @@ interface TelegramBotContract
      * @return void
      */
     public function answerCallbackQuery(CallbackQueryAnswer $answer): void;
+
+    /**
+     * Returns a collection of available commands (name and description).
+     *
+     * @return Collection|BotCommand[]
+     */
+    public function listOfCommands(): Collection;
+
+    /**
+     * Changes the list of the bot's commands.
+     *
+     * @return bool
+     */
+    public function setMyCommands(): bool;
 }

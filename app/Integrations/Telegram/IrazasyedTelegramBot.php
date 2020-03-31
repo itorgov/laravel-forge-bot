@@ -10,6 +10,7 @@ use App\Integrations\Telegram\Commands\Irazasyed\HelpCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\MenuCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\ShowChatIdCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\StartCommand;
+use App\Integrations\Telegram\Entities\BotCommand;
 use App\Integrations\Telegram\Entities\CallbackQueryAnswer;
 use App\Integrations\Telegram\Entities\ChatAction;
 use App\Integrations\Telegram\Entities\OutboundMessage;
@@ -19,11 +20,15 @@ use App\Integrations\Telegram\Exceptions\TelegramBotException;
 use App\Integrations\Telegram\Menu\MenuManager;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Telegram\Bot\Api;
 use Telegram\Bot\Exceptions\TelegramSDKException;
 use Telegram\Bot\Objects\MessageEntity;
 use Telegram\Bot\Objects\Update;
+use Telegram\Bot\TelegramClient;
 
 class IrazasyedTelegramBot implements TelegramBotContract
 {
@@ -87,6 +92,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
         try {
             // This library doesn't have any method for getting info about webhook.
             // So I found this workaround.
+            // TODO: Make a PR to Irazasyed lib.
             $response = $this->telegram->getWebhookInfo(null);
         } catch (TelegramSDKException $e) {
             throw new TelegramBotException($e->getMessage());
@@ -334,5 +340,29 @@ class IrazasyedTelegramBot implements TelegramBotContract
         } catch (TelegramSDKException $e) {
             throw new TelegramBotException($e->getMessage());
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function listOfCommands(): Collection
+    {
+        return collect($this->telegram->getCommands())->map(function ($handler, $name) {
+            return new BotCommand($name, $handler->getDescription());
+        })->values();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setMyCommands(): bool
+    {
+        // TODO: Make a PR to Irazasyed lib.
+
+        $response = Http::post(TelegramClient::BASE_BOT_URL."{$this->telegram->getAccessToken()}/setMyCommands", [
+            'commands' => $this->listOfCommands()->toJson(),
+        ]);
+
+        return $response->ok() && Arr::get($response->json(), 'result');
     }
 }
