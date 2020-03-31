@@ -19,6 +19,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        if ($this->app->isLocal()) {
+            $this->app->register(TelescopeServiceProvider::class);
+        }
+
         $this->app->bind(IrazasyedTelegramBot::class, function () {
             return new IrazasyedTelegramBot(config('services.telegram.bot.api_key'));
         });
@@ -39,6 +43,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        URL::forceScheme('https');
+        //URL::forceScheme('https');
     }
 }
