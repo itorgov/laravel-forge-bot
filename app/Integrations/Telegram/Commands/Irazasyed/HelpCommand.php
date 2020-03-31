@@ -31,9 +31,9 @@ class HelpCommand extends Command
     {
         $text = TelegramBot::listOfCommands()->reduce(function (string $text, BotCommand $botCommand) {
             return $text.vsprintf("/%s - %s\n", [
-                    $botCommand->getName(),
-                    $botCommand->getDescription(),
-                ]);
+                $botCommand->getName(),
+                $botCommand->getDescription(),
+            ]);
         }, "Here is a list of available commands:\n");
 
         $this->replyWithMessage([

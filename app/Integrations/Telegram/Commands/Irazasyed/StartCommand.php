@@ -23,9 +23,9 @@ class StartCommand extends Command
     {
         $this->replyWithMessage([
             'text' => "Hey, {$this->user()->name}! You are welcome! It's an unofficial bot for Laravel Forge. ".
-                "It's completely free and you can find source code on ".
-                "[GitHub](https://github.com/itorgov/laravel-forge-bot). ".
-                "If you like it then please give a star to the repository.",
+                'It\'s completely free and you can find source code on '.
+                '[GitHub](https://github.com/itorgov/laravel-forge-bot). '.
+                'If you like it then please give a star to the repository.',
             'parse_mode' => 'Markdown',
         ]);
 
