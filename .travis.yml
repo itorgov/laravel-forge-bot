@@ -4,12 +4,11 @@ php:
   - 7.4
 cache:
   directories:
-    - node_modules
-    - vendor
+    - $HOME/.composer/cache
 before_script:
   - cp .env.travis .env
   - composer self-update
-  - composer install --prefer-source --no-interaction --dev
+  - composer install --prefer-source --no-interaction
   - php artisan key:generate
   - php artisan migrate
 script:
