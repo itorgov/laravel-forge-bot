@@ -32,7 +32,9 @@
         "hashids/hashids": "^4.0",
         "irazasyed/telegram-bot-sdk": "^3.0",
         "laravel/framework": "^7.0",
+        "laravel/horizon": "^4.2",
         "laravel/tinker": "^2.0",
+        "predis/predis": "^1.1",
         "themsaid/forge-sdk": "dev-develop"
     },
     "require-dev": {
@@ -78,6 +80,9 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "post-update-cmd": [
+            "@php artisan horizon:publish"
         ]
     }
 }
