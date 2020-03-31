@@ -265,7 +265,6 @@ class IrazasyedTelegramBot implements TelegramBotContract
      */
     public function handle(Request $request): void
     {
-        logger()->debug('New update from Telegram', $request->all());
         $update = new Update($request->all());
 
         if ($update->isType('callback_query')) {

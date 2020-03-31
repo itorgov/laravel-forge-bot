@@ -19,8 +19,6 @@ class LaravelForgeController extends Controller
      */
     public function __invoke(Request $request, string $hash): Response
     {
-        logger('Request from Laravel Forge', $request->all());
-
         $user = User::findOrFailByHash($hash);
 
         SendDeploymentNotificationJob::dispatch($user, $request->all());
