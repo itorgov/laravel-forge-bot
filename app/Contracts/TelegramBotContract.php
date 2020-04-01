@@ -6,8 +6,7 @@ use App\Integrations\Telegram\Entities\BotCommand;
 use App\Integrations\Telegram\Entities\CallbackQueryAnswer;
 use App\Integrations\Telegram\Entities\ChatAction;
 use App\Integrations\Telegram\Entities\OutboundMessage;
-use App\Integrations\Telegram\Entities\WebhookInfoResponse;
-use App\Integrations\Telegram\Entities\WebhookResponse;
+use App\Integrations\Telegram\Entities\WebhookInfo;
 use App\Integrations\Telegram\Exceptions\TelegramBotException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -19,26 +18,26 @@ interface TelegramBotContract
      *
      * @param string $hookUrl
      *
-     * @return WebhookResponse
+     * @return bool
      * @throws TelegramBotException
      */
-    public function setWebhook(string $hookUrl): WebhookResponse;
+    public function setWebhook(string $hookUrl): bool;
 
     /**
      * Returns info about current webhook.
      *
-     * @return WebhookInfoResponse
+     * @return WebhookInfo
      * @throws TelegramBotException
      */
-    public function getWebhookInfo(): WebhookInfoResponse;
+    public function getWebhookInfo(): WebhookInfo;
 
     /**
      * Removes a webhook.
      *
-     * @return WebhookResponse
+     * @return bool
      * @throws TelegramBotException
      */
-    public function removeWebhook(): WebhookResponse;
+    public function removeWebhook(): bool;
 
     /**
      * Authenticates a user using user's credentionals from Telegram.

@@ -14,8 +14,7 @@ use App\Integrations\Telegram\Entities\BotCommand;
 use App\Integrations\Telegram\Entities\CallbackQueryAnswer;
 use App\Integrations\Telegram\Entities\ChatAction;
 use App\Integrations\Telegram\Entities\OutboundMessage;
-use App\Integrations\Telegram\Entities\WebhookInfoResponse;
-use App\Integrations\Telegram\Entities\WebhookResponse;
+use App\Integrations\Telegram\Entities\WebhookInfo;
 use App\Integrations\Telegram\Exceptions\TelegramBotException;
 use App\Integrations\Telegram\Menu\MenuManager;
 use App\User;
@@ -48,71 +47,66 @@ class IrazasyedTelegramBot implements TelegramBotContract
     {
         try {
             $this->telegram = new Api($botApiKey);
+
+            $this->telegram->addCommands([
+                StartCommand::class,
+                HelpCommand::class,
+                ShowChatIdCommand::class,
+                AddTokenCommand::class,
+                DeleteTokenCommand::class,
+                MenuCommand::class,
+            ]);
+
+            if (config('services.telegram.bot.donate_command')) {
+                $this->telegram->addCommand(DonateCommand::class);
+            }
         } catch (TelegramSDKException $e) {
             throw new TelegramBotException($e->getMessage());
-        }
-
-        $this->telegram->addCommands([
-            StartCommand::class,
-            HelpCommand::class,
-            ShowChatIdCommand::class,
-            AddTokenCommand::class,
-            DeleteTokenCommand::class,
-            MenuCommand::class,
-        ]);
-
-        if (config('services.telegram.bot.donate_command')) {
-            $this->telegram->addCommands([
-                DonateCommand::class,
-            ]);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setWebhook(string $hookUrl): WebhookResponse
+    public function setWebhook(string $hookUrl): bool
     {
         try {
-            $response = $this->telegram->setWebhook([
+            $result = $this->telegram->setWebhook([
                 'url' => $hookUrl,
             ]);
         } catch (TelegramSDKException $e) {
             throw new TelegramBotException($e->getMessage());
         }
 
-        return new WebhookResponse($response->getDecodedBody());
+        return $result;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getWebhookInfo(): WebhookInfoResponse
+    public function getWebhookInfo(): WebhookInfo
     {
         try {
-            // This library doesn't have any method for getting info about webhook.
-            // So I found this workaround.
-            // TODO: Make a PR to Irazasyed lib.
-            $response = $this->telegram->getWebhookInfo(null);
+            $response = $this->telegram->getWebhookInfo();
         } catch (TelegramSDKException $e) {
             throw new TelegramBotException($e->getMessage());
         }
 
-        return new WebhookInfoResponse($response->getDecodedBody());
+        return new WebhookInfo($response->toArray());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeWebhook(): WebhookResponse
+    public function removeWebhook(): bool
     {
         try {
-            $response = $this->telegram->removeWebhook();
+            $result = $this->telegram->removeWebhook();
         } catch (TelegramSDKException $e) {
             throw new TelegramBotException($e->getMessage());
         }
 
-        return new WebhookResponse($response->getDecodedBody());
+        return $result;
     }
 
     /**
@@ -203,7 +197,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
      */
     private function updateIsCommand(Update $update): bool
     {
-        if (! $update->isType('message')) {
+        if (! $update->isType('message') && ! $update->isType('channel_post')) {
             return false;
         }
 
@@ -279,7 +273,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
             return;
         }
 
-        if ($update->isType('message')) {
+        if ($update->isType('message') || $update->isType('channel_post')) {
             if ($this->botWasKickedFromChat($update) || $this->messageForMenu($update)) {
                 return;
             }

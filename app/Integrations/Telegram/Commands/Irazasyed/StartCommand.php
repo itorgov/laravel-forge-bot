@@ -17,9 +17,9 @@ class StartCommand extends Command
     /**
      * Handle the command.
      *
-     * @param $arguments
+     * @return void
      */
-    public function handle($arguments)
+    public function handle()
     {
         $this->replyWithMessage([
             'text' => "Hey, {$this->user()->name}! You are welcome! It's an unofficial bot for Laravel Forge. ".

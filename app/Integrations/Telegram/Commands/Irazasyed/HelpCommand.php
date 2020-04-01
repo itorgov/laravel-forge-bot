@@ -13,11 +13,6 @@ class HelpCommand extends Command
     protected $name = 'help';
 
     /**
-     * @var array Command aliases.
-     */
-    protected $aliases = ['listcommands'];
-
-    /**
      * @var string Command description.
      */
     protected $description = 'Help command returns a list of commands.';
@@ -25,9 +20,9 @@ class HelpCommand extends Command
     /**
      * Handle the command.
      *
-     * @param $arguments
+     * @return void
      */
-    public function handle($arguments)
+    public function handle()
     {
         $text = TelegramBot::listOfCommands()->reduce(function (string $text, BotCommand $botCommand) {
             return $text.vsprintf("/%s - %s\n", [

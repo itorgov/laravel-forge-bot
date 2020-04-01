@@ -17,9 +17,9 @@ class DonateCommand extends Command
     /**
      * Handle the command.
      *
-     * @param $arguments
+     * @return void
      */
-    public function handle($arguments)
+    public function handle()
     {
         $this->replyWithMessage([
             'text' => 'If you like this bot then please give a star to '.

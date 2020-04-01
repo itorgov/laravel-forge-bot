@@ -20,9 +20,9 @@ class MenuCommand extends Command
     /**
      * Handle the command.
      *
-     * @param $arguments
+     * @return void
      */
-    public function handle($arguments)
+    public function handle()
     {
         /** @var Message $message */
         $message = $this->replyWithMessage([

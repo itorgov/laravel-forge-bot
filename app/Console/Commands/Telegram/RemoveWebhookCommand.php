@@ -28,7 +28,7 @@ class RemoveWebhookCommand extends Command
      */
     public function handle(): int
     {
-        $this->info(TelegramBot::removeWebhook()->description);
+        $this->info(TelegramBot::removeWebhook() ? 'Webhook was deleted' : 'Webhook wasn\'t deleted');
 
         return 0;
     }

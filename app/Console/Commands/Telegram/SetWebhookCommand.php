@@ -53,7 +53,7 @@ class SetWebhookCommand extends Command
             return true;
         }
 
-        $currentWebhookUrl = TelegramBot::getWebhookInfo()->result->url;
+        $currentWebhookUrl = TelegramBot::getWebhookInfo()->url;
 
         if (! empty($currentWebhookUrl)) {
             $this->alert("There is a current webhook URL: {$currentWebhookUrl}");
@@ -69,10 +69,10 @@ class SetWebhookCommand extends Command
      *
      * @param string $url
      *
-     * @return string|null
+     * @return string
      */
-    protected function setWebhook(string $url): ?string
+    protected function setWebhook(string $url): string
     {
-        return TelegramBot::setWebhook($url)->description;
+        return TelegramBot::setWebhook($url) ? 'Webhook was set' : 'Webhook wasn\'t set';
     }
 }

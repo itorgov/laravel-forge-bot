@@ -17,9 +17,9 @@ class ShowChatIdCommand extends Command
     /**
      * Handle the command.
      *
-     * @param $arguments
+     * @return void
      */
-    public function handle($arguments)
+    public function handle()
     {
         $this->replyWithMessage([
             'text' => "ID of this chat is `{$this->user()->telegram_chat_id}`.",

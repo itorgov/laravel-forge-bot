@@ -19,9 +19,9 @@ class AddTokenCommand extends Command
     /**
      * Handle the command.
      *
-     * @param $arguments
+     * @return void
      */
-    public function handle($arguments)
+    public function handle()
     {
         AddTokenDialog::start();
     }
