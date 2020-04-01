@@ -32,11 +32,11 @@ So I decided to improve my bot and built the second version.
 * Reboot PHP.
 * Reboot NGINX. 
 
-It also have a feature to run deploy of your site right from Telegram.
-It's really helpful when you don't want to enable "Quick deploy" feature for your site.
+It also has a feature to run deploy of your site right from Telegram.
+It's really helpful when you don't want to enable the "Quick deploy" feature for your site.
 
-Other awesome feature is sending deployment notifications from Laravel Forge to you or any other chat.
-Using this abilyty only one member of your team will manage servers in his private chat with the bot, but all members will recieve deployment notifications in your team chat.
+Another awesome feature is sending deployment notifications from Laravel Forge to you or any other chat.
+Using this ability only one member of your team will manage servers in his private chat with the bot, but all members will receive deployment notifications in your team chat.
 
 ## Screenshots
 
