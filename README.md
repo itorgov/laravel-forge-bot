@@ -40,7 +40,13 @@ Using this ability only one member of your team will manage servers in his priva
 
 ## Screenshots
 
-There will be screenshots.
+![Accounts screen](https://res.cloudinary.com/itorgov/image/upload/v1585933203/Laravel%20Forge%20Telegram%20bot/laravel-forge-bot_screen_1_gtobco.jpg)
+![Servers screen](https://res.cloudinary.com/itorgov/image/upload/v1585933206/Laravel%20Forge%20Telegram%20bot/laravel-forge-bot_screen_2_nzhkqa.jpg)
+![Server screen](https://res.cloudinary.com/itorgov/image/upload/v1585933204/Laravel%20Forge%20Telegram%20bot/laravel-forge-bot_screen_3_bewlyr.jpg)
+![Site screen](https://res.cloudinary.com/itorgov/image/upload/v1585933204/Laravel%20Forge%20Telegram%20bot/laravel-forge-bot_screen_4_ebglqf.jpg)
+![Add webhook screen](https://res.cloudinary.com/itorgov/image/upload/v1585933204/Laravel%20Forge%20Telegram%20bot/laravel-forge-bot_screen_5_twu2af.jpg)
+![Existed webhooks on site](https://res.cloudinary.com/itorgov/image/upload/v1585933203/Laravel%20Forge%20Telegram%20bot/laravel-forge-bot_screen_6_o1fhux.jpg)
+![Notification example](https://res.cloudinary.com/itorgov/image/upload/v1585933204/Laravel%20Forge%20Telegram%20bot/laravel-forge-bot_screen_7_afakpc.jpg)
 
 ## How to use?
 
@@ -79,9 +85,18 @@ We use [SemVer](http://semver.org) for versioning. For the versions available, s
 
 ## Authors
 
-* [**Ivan Torgov**](https://github.com/itorgov) - *initial work*
+* [**Ivan Torgov**](https://itorgov.com) - *initial work*
+
+## Thanks
+
+I want to say thanks to [Eric L. Barnes](https://laravel-news.com/@ericlbarnes) (the creator of [Laravel News](https://laravel-news.com)) for providing an image that I used as an avatar of this bot.
 
 ## License
 
 [@LaravelForgeBot](https://t.me/LaravelForgeBot) is licensed under the [ISC](https://github.com/itorgov/laravel-forge-bot/blob/2.x/LICENSE) license.  
 Copyright &copy; 2020, Ivan Torgov
+
+## Donate
+
+If you like this bot and would like to support it, please consider a donation using my [PayPal](https://paypal.me/WiDe) page.
+Your donation would help me a lot to continue running this bot and covering hosting costs.

@@ -22,10 +22,11 @@ class DonateCommand extends Command
     public function handle()
     {
         $this->replyWithMessage([
-            'text' => 'If you like this bot then please give a star to '.
+            'text' => 'If you like this bot and find it useful, please give a star to '.
                 '[the GitHub repository](https://github.com/itorgov/laravel-forge-bot). '.
-                'Of course, if you want you can buy [me](https://t.me/ivantorgov) a cup of coffee, '.
-                'a beer or just help with paying for hosting using [my PayPal page](https://paypal.me/WiDe).',
+                'Of course, if you would like to support it, please consider a donation ' .
+                'using my [PayPal](https://paypal.me/WiDe) page. Your donation would help ' .
+                '[me](https://t.me/ivantorgov) a lot to continue running this bot and covering hosting costs.',
             'parse_mode' => 'Markdown',
         ]);
     }
