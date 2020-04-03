@@ -12,7 +12,7 @@
 ## Motivation
 
 Several years ago I have started to use Laravel Forge for deploying my and my clients' projects.
-I found that Laravel Forge couldn't send deployment notification to Telegram messager but for me, Telegram is the number one messenger.
+I found that Laravel Forge couldn't send deployment notifications to Telegram messager but for me, Telegram is the number one messenger.
 That time I just wrote a simple bot with hardcoded chat id and webhook URL.
 During my work, I realized that I need a more flexible solution and I designed and implemented the first version of this bot.
 The first version could only send deployment notifications.
