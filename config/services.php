@@ -37,6 +37,9 @@ return [
             'webhook_token' => env('TELEGRAM_BOT_WEBHOOK_TOKEN'),
             'donate_command' => env('TELEGRAM_BOT_DONATE_COMMAND'),
         ],
+        'instant_view' => [
+            'hash' => env('TELEGRAM_INSTANT_VIEW_HASH'),
+        ],
     ],
 
 ];

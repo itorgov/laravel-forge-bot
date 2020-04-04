@@ -28,6 +28,7 @@
         "clue/socks-react": "^1.0",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
+        "goldspecdigital/laravel-eloquent-uuid": "^7.0",
         "guzzlehttp/guzzle": "^6.3",
         "hashids/hashids": "^4.0",
         "irazasyed/telegram-bot-sdk": "dev-develop#5bacf81",

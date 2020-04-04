@@ -13,6 +13,7 @@ class SiteScreen extends Screen
     public const NAME = 'site';
 
     public const ACTION_DEPLOY = 'deploy';
+    public const ACTION_DEPLOYMENT_LOG = 'deployment-log';
     public const ACTION_ADD_WEBHOOK = 'add-webhook';
 
     /**
@@ -43,6 +44,8 @@ class SiteScreen extends Screen
 
         $keyboard = InlineKeyboard::make()
             ->button(InlineKeyboardButton::make('🧱 Deploy Now')->callbackData($this->generateCallbackData(self::NAME, self::ACTION_DEPLOY)))
+            ->row()
+            ->button(InlineKeyboardButton::make('📝 Get latest deployment log')->callbackData($this->generateCallbackData(self::NAME, self::ACTION_DEPLOYMENT_LOG)))
             ->row()
             ->button(InlineKeyboardButton::make('➕ Add Notification Webhook')->callbackData($this->generateCallbackData(self::NAME, self::ACTION_ADD_WEBHOOK)));
 

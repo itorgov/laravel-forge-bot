@@ -2,9 +2,11 @@
 
 namespace App\Integrations\Telegram\Menu;
 
+use App\DeploymentLog;
 use App\Facades\LaravelForge;
 use App\Integrations\Telegram\Dialogs\AskForChatIdDialog;
 use App\Integrations\Telegram\Entities\CallbackQueryAnswer;
+use App\Integrations\Telegram\Entities\OutboundMessage;
 use App\Integrations\Telegram\Menu\Screens\AddWebhookScreen;
 use App\Integrations\Telegram\Menu\Screens\ServerScreen;
 use App\Integrations\Telegram\Menu\Screens\ServersScreen;
@@ -256,6 +258,24 @@ class MenuManager
             case SiteScreen::ACTION_DEPLOY:
                 LaravelForge::setToken($this->menu->token)->deploySite($this->menu->server->id, $this->menu->site->id);
                 CallbackQueryAnswer::make($callbackId, 'Deploying pushed code...')->showAsModal()->send();
+
+                break;
+
+            case SiteScreen::ACTION_DEPLOYMENT_LOG:
+                $log = LaravelForge::setToken($this->menu->token)->getDeploymentLog($this->menu->server->id, $this->menu->site->id);
+
+                $deploymentLog = DeploymentLog::query()->create([
+                    'server_name' => $this->menu->server->name,
+                    'site_name' => $this->menu->site->name,
+                    'content' => $log,
+                ]);
+
+                CallbackQueryAnswer::make($callbackId, '↓ Got it! See the last message. ↓')->send();
+
+                OutboundMessage::make(
+                    $this->menu->user,
+                    "[Here]({$deploymentLog->url}) is your latest deployment log for {$deploymentLog->site_name} site."
+                )->parseMode(OutboundMessage::PARSE_MODE_MARKDOWN)->send();
 
                 break;
 

@@ -147,4 +147,14 @@ interface LaravelForgeContract
      * @return void
      */
     public function deleteWebhook(int $serverId, int $siteId, int $webhookId): void;
+
+    /**
+     *  Get the last deployment log of the site.
+     *
+     * @param int $serverId
+     * @param int $siteId
+     *
+     * @return string
+     */
+    public function getDeploymentLog(int $serverId, int $siteId): string;
 }

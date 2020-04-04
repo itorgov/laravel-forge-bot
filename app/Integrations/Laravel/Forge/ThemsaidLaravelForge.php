@@ -220,4 +220,16 @@ class ThemsaidLaravelForge implements LaravelForgeContract
             throw new LaravelForgeException($e->getMessage());
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDeploymentLog(int $serverId, int $siteId): string
+    {
+        try {
+            return $this->forge->siteDeploymentLog($serverId, $siteId);
+        } catch (Exception $e) {
+            throw new LaravelForgeException($e->getMessage());
+        }
+    }
 }

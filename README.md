@@ -14,9 +14,11 @@
 Several years ago I have started to use Laravel Forge for deploying my and my clients' projects.
 I found that Laravel Forge couldn't send deployment notifications to Telegram messager but for me, Telegram is the number one messenger.
 That time I just wrote a simple bot with hardcoded chat id and webhook URL.
+
 During my work, I realized that I need a more flexible solution and I designed and implemented the first version of this bot.
 The first version could only send deployment notifications.
 It just generated a webhook URL for you and then you had to add that URL manually to your Laravel Forge's site.
+
 After release, I have started to work with a new client.
 This client has had a project where I haven't could to enable "Quick deploy".
 Because of that I had to go to the Laravel Forge website and hit the button "Deploy Now" whenever I needed to update the production.
@@ -85,7 +87,9 @@ We use [SemVer](http://semver.org) for versioning. For the versions available, s
 
 ## Authors
 
-* [**Ivan Torgov**](https://itorgov.com) - *initial work*
+* [**Ivan Torgov**](https://itorgov.com)
+
+See also the list of [contributors](https://github.com/itorgov/laravel-forge-bot/contributors) who participated in this project.
 
 ## Thanks
 
