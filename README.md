@@ -42,13 +42,9 @@ Using this ability only one member of your team will manage servers in his priva
 
 ## Screenshots
 
-![Accounts screen](https://res.cloudinary.com/itorgov/image/upload/v1585933203/Laravel%20Forge%20Telegram%20bot/laravel-forge-bot_screen_1_gtobco.jpg)
-![Servers screen](https://res.cloudinary.com/itorgov/image/upload/v1585933206/Laravel%20Forge%20Telegram%20bot/laravel-forge-bot_screen_2_nzhkqa.jpg)
-![Server screen](https://res.cloudinary.com/itorgov/image/upload/v1585933204/Laravel%20Forge%20Telegram%20bot/laravel-forge-bot_screen_3_bewlyr.jpg)
-![Site screen](https://res.cloudinary.com/itorgov/image/upload/v1585933204/Laravel%20Forge%20Telegram%20bot/laravel-forge-bot_screen_4_ebglqf.jpg)
-![Add webhook screen](https://res.cloudinary.com/itorgov/image/upload/v1585933204/Laravel%20Forge%20Telegram%20bot/laravel-forge-bot_screen_5_twu2af.jpg)
-![Existed webhooks on site](https://res.cloudinary.com/itorgov/image/upload/v1585933203/Laravel%20Forge%20Telegram%20bot/laravel-forge-bot_screen_6_o1fhux.jpg)
-![Notification example](https://res.cloudinary.com/itorgov/image/upload/v1585933204/Laravel%20Forge%20Telegram%20bot/laravel-forge-bot_screen_7_afakpc.jpg)
+![Server screen](https://res.cloudinary.com/itorgov/image/upload/v1586093694/Laravel%20Forge%20Telegram%20bot/laravel-forge-bot_screen-1_fnqygo.jpg)
+![Site screen](https://res.cloudinary.com/itorgov/image/upload/v1586093695/Laravel%20Forge%20Telegram%20bot/laravel-forge-bot_screen-2_kcvecz.jpg)
+![Notification and deployment log example](https://res.cloudinary.com/itorgov/image/upload/v1586093694/Laravel%20Forge%20Telegram%20bot/laravel-forge-bot_screen-3_gaozoc.jpg)
 
 ## How to use?
 

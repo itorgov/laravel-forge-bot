@@ -42,6 +42,7 @@ body: //div[has-class("deployment-log")]
 title: $body//h1
 subtitle: $body//h2
 published_date: $header//time/@datetime
+description: $header//time
 
 @remove: $header//time
 -->
