@@ -31,17 +31,32 @@ class DeploymentLog extends Model
     protected $guarded = [];
 
     /**
-     * Returns an URL to a page with this log using the Instant View feature of Telegram.
+     * Returns an URL to a page with this log.
+     * Uses the Instant View feature of Telegram if instant view hash is set.
      *
      * @return string
      */
     public function getUrlAttribute(): string
     {
+        if (empty(config('services.telegram.instant_view.hash'))) {
+            return route('deployment-logs.show', [$this]);
+        }
+
         $query = http_build_query([
             'url' => route('deployment-logs.show', [$this]),
             'rhash' => config('services.telegram.instant_view.hash'),
         ]);
 
         return "https://t.me/iv?{$query}";
+    }
+
+    /**
+     * Returns formatted date.
+     *
+     * @return string
+     */
+    public function getFormattedDateAttribute(): string
+    {
+        return $this->created_at->toRfc850String();
     }
 }

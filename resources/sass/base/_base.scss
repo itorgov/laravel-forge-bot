@@ -1,0 +1,20 @@
+html {
+  box-sizing: border-box;
+  font-size: 62.5%; // 10px => 1rem
+
+  @media only screen and (max-width: 20em) {
+    font-size: 50%; // 8px
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: $color-white;
+}

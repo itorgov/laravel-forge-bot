@@ -1,7 +1,6 @@
 <?php
 
-use App\User;
-use Faker\Generator as Faker;
+use App\DeploymentLog;
 use Illuminate\Database\Eloquent\Factory;
 
 /*
@@ -17,9 +16,10 @@ use Illuminate\Database\Eloquent\Factory;
 
 /** @var Factory $factory */
 
-$factory->define(User::class, function (Faker $faker) {
+$factory->define(DeploymentLog::class, function () {
     return [
-        'name' => $faker->name,
-        'telegram_chat_id' => '000111',
+        'server_name' => 'Test server',
+        'site_name' => 'Test site',
+        'content' => "Rendering Complete, saving .css file...\nWrote CSS to /home/forge/example.com/css/style.css\nDone in 2.62s.",
     ];
 });
