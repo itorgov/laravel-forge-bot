@@ -77,6 +77,12 @@ Use this command to get an ID of any chat.
 It will be helpful when you'll configure receiving deployment notifications to other chat.
 Please note that if you have more than one bots in your target chat then you have to write bot's username after the command without space (/showchatid@LaravelForgeBot).
 
+## Using this bot in groups
+
+Note that this bot has no access to messages in groups.
+So, when you add a new token you have to send token as an answer to the last bot's message.
+The same action required when you add a webhook to another chat and have to send a chat id.
+
 ## Versioning
 
 We use [SemVer](http://semver.org) for versioning. For the versions available, see the [releases on this repository](https://github.com/itorgov/laravel-forge-bot/releases). 

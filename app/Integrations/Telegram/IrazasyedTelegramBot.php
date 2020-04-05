@@ -178,14 +178,20 @@ class IrazasyedTelegramBot implements TelegramBotContract
      *
      * @param Update $update
      *
-     * @return void
+     * @return bool
      */
-    private function processCommand(Update $update): void
+    private function processCommand(Update $update): bool
     {
+        if (! $this->updateIsCommand($update)) {
+            return false;
+        }
+
         // Every command will finish all current user's dialogs and menu dialogs.
         Auth::user()->finishAllCurrentDialogs();
 
         $this->telegram->processCommand($update);
+
+        return true;
     }
 
     /**
@@ -274,13 +280,11 @@ class IrazasyedTelegramBot implements TelegramBotContract
         }
 
         if ($update->isType('message') || $update->isType('channel_post')) {
-            if ($this->botWasKickedFromChat($update) || $this->messageForMenu($update)) {
-                return;
-            }
-
-            if ($this->updateIsCommand($update)) {
-                $this->processCommand($update);
-
+            if (
+                $this->botWasKickedFromChat($update) ||
+                $this->processCommand($update) ||
+                $this->messageForMenu($update)
+            ) {
                 return;
             }
 
