@@ -77,7 +77,7 @@ Use this command to get an ID of any chat.
 It will be helpful when you'll configure receiving deployment notifications to other chat.
 Please note that if you have more than one bots in your target chat then you have to write bot's username after the command without space (/showchatid@LaravelForgeBot).
 
-## Using this bot in groups
+### Using this bot in groups
 
 Note that this bot has no access to messages in groups.
 So, when you add a new token you have to send token as an answer to the last bot's message.
