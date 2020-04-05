@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Factory;
 */
 
 /** @var Factory $factory */
-
 $factory->define(DeploymentLog::class, function () {
     return [
         'server_name' => 'Test server',

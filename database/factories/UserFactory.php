@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Factory;
 */
 
 /** @var Factory $factory */
-
 $factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
