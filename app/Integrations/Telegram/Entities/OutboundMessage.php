@@ -2,7 +2,9 @@
 
 namespace App\Integrations\Telegram\Entities;
 
+use App\Events\BotWasBlocked;
 use App\Facades\TelegramBot;
+use App\Integrations\Telegram\Exceptions\TelegramBotException;
 use App\User;
 use Illuminate\Contracts\Support\Arrayable;
 
@@ -132,7 +134,15 @@ class OutboundMessage implements Arrayable
      */
     public function send(): void
     {
-        TelegramBot::sendMessage($this);
+        try {
+            TelegramBot::sendMessage($this);
+        } catch (TelegramBotException $exception) {
+            if ($exception->getMessage() === 'Forbidden: bot was blocked by the user') {
+                event(new BotWasBlocked($this->params['chat_id']));
+            } else {
+                throw $exception;
+            }
+        }
     }
 
     /**
