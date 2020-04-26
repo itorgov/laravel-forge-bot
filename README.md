@@ -71,6 +71,10 @@ If you want you can delete added token from the bot by using this command.
 
 This command creates a new menu for managing servers.
 
+### /webhook
+
+If you don't want to provide your API token for managing your Laravel Forge account but want to receive deployment notifications the use this command.
+
 ### /showchatid
 
 Use this command to get an ID of any chat.

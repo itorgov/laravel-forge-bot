@@ -93,7 +93,9 @@ class AddTokenDialog extends BaseDialog implements DialogContract
             $text = 'Let\'s add your first Laravel Forge API token. '.
                 'Go to the [API](https://forge.laravel.com/user/profile#/api) section in your '.
                 'Laravel Forge account settings and generate a new token. '.
-                'Then just send it to me.';
+                "Then just send it to me.\nIf you don't want to provide your token ".
+                'and don\'t want to manage your Laravel Forge account using this bot, '.
+                'but you want to receive deployment notifications then just use the /webhook command.';
         } else {
             $text = 'Send me your Laravel Forge API token.';
         }

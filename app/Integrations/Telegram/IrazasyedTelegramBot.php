@@ -10,6 +10,7 @@ use App\Integrations\Telegram\Commands\Irazasyed\HelpCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\MenuCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\ShowChatIdCommand;
 use App\Integrations\Telegram\Commands\Irazasyed\StartCommand;
+use App\Integrations\Telegram\Commands\Irazasyed\WebhookCommand;
 use App\Integrations\Telegram\Entities\BotCommand;
 use App\Integrations\Telegram\Entities\CallbackQueryAnswer;
 use App\Integrations\Telegram\Entities\ChatAction;
@@ -55,6 +56,7 @@ class IrazasyedTelegramBot implements TelegramBotContract
                 AddTokenCommand::class,
                 DeleteTokenCommand::class,
                 MenuCommand::class,
+                WebhookCommand::class,
             ]);
 
             if (config('services.telegram.bot.donate_command')) {
