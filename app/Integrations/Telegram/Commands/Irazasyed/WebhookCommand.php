@@ -87,7 +87,7 @@ class WebhookCommand extends Command
     {
         return $this->replyWithPhoto([
             'photo' => $image,
-            'caption' => "Copy that URL and paste it to this section in your Laravel Forge site details.",
+            'caption' => 'Copy that URL and paste it to this section in your Laravel Forge site details.',
         ]);
     }
 }
