@@ -53,6 +53,7 @@ List of available commands:
 * /addtoken
 * /deletetoken
 * /menu
+* /webhook
 * /showchatid
 
 You always can get an actual list of commands by using /help command.
